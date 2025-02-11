@@ -1,0 +1,54 @@
+$("#customer-suggestions").on("click", ".dropdown-item", function () {
+    const selectedName = $(this).data("name");
+    let selectedCompanyName ="Company Name : "+ $(this).data("companyname");
+    if (selectedCompanyName === "Company Name : "+null){
+        selectedCompanyName="";
+    }
+    $("#customer-name").val(selectedName);
+    $(".company").text(selectedCompanyName);
+    $("#customer-suggestions").hide();
+});
+
+
+
+
+
+function fetchBillingDetails(billingId) {
+    fetch(`/fetch-billing-details/${billingId}/`)
+        .then(response => response.json())
+        .then(data => {
+            const billingData = data.billing_data;
+            let company_name="Company Name : "+data.billing_data.company_name;
+            if (company_name === "Company Name : "+null){
+                company_name=" ";
+            }
+            if (billingData.error) {
+                alert(billingData.error);
+                return;
+            }
+
+            const modalBodyContent = document.getElementById('modalBodyContent');
+            modalBodyContent.innerHTML = `
+                <div class="row  align-items-center" style="height: 50vh;">
+                    <div class="col-12 col-lg-10">
+                        <div class="container">
+                            <div class="card" style="border: none; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  max-width: 90vw; max-height: auto;  background-color: white;margin-bottom:2vh;">
+                                <div class="card-body" style="padding: 20px; background: linear-gradient(to bottom, #ffffff, #f9f9f9);  height: 100%; width: 123%;">
+                                    <div class="toolbar hidden-print">
+                                        <div class="text-end">
+                                            <button type="button" class="btn btn-dark" onclick="printInvoice()" style="background-color: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px;">
+                                                <i class="fa fa-print"></i> Print
+                                            </button>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                    <div id="invoice">
+                                        <div class="invoice" style="padding: 20px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);white;margin-bottom:2vh;">
+                                            <main id="print">
+                                                <div class="row contacts" style="margin-bottom: 20px;">
+                                                    <div class="col invoice-to">
+                                                        <div style="color: #777; font-weight: bold; font-size: 0.9rem;">INVOICE TO:</div>
+                                                        <div style="font-size: 4vh;">${billingData.customer_name}</div>
+                                                        <div>${company_name}</div>
+                                                        <div>${billingData.customer_phone}</div>
+                                                        <div class="address"></div>
