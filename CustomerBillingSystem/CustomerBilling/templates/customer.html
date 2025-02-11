@@ -1,0 +1,1115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<style>
+   
+    
+       
+        
+    .navbar {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 15px 30px;
+        background: linear-gradient(90deg, rgb(3, 3, 3), rgb(0, 0, 0));
+        animation: fadeIn 1s ease-in-out;
+    }
+    
+    
+    .navbar-brand img {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .navbar-brand img:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+    
+    
+    .navbar-toggler {
+        border: none;
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 5px;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    
+    .navbar-toggler:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+        transform: rotate(90deg);
+    }
+    
+    
+    .nav-pills {
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 5px;
+        border-radius: 30px;
+        animation: slideInFromLeft 0.8s ease-in-out;
+    }
+    
+    
+    .nav-pills .nav-link {
+        color: #555;
+        font-weight: bold;
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    }
+    
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    
+    
+    
+    
+        /* Container Styling */
+        .container {
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        /* Card Styling */
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: slideInFromBottom 0.8s ease-in-out;
+        }
+        
+        .card-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        
+        .card-body {
+            background-color: #fff;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        
+        /* Form Styling */
+        .form-label {
+            font-weight: bold;
+            color: rgb(77, 51, 178);
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .form-control {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: rgb(0, 72, 255);
+            box-shadow: 0 0 8px rgba(0, 85, 255, 0.4);
+        }
+        
+        /* Submit Button Styling */
+        .btn-custom {
+            background-color: rgb(72, 48, 169);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: bounceIn 0.6s ease-in-out;
+        }
+        
+        .btn-custom:hover {
+            background-color: rgb(47, 0, 255);
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(30, 30, 183, 0.4);
+        }
+        
+        
+        html, body {
+            margin: 0; /* Removes default margin */
+            padding: 0; /* Removes default padding */
+            overflow-y: auto; /* Disables scrolling */
+            overflow-x:hidden;
+            width: 100%; /* Ensures content stays within viewport width */
+            height: 100%; /* Ensures content stays within viewport height */
+        }
+
+        .table {
+            width: 100%;
+            margin: auto;
+            border-collapse: collapse;
+            font-size: 1rem;
+            color: #555;
+        }
+        
+        .table-borderless td, .table-borderless th {
+            border: none;
+            padding: 12px 8px;
+        }
+        
+        /* Heading Styling */
+        h2 {
+            color: rgb(71, 61, 183);
+            font-weight: bold;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInFromBottom {
+            from {
+                opacity: 0;
+                transform: translateY(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        
+        .sort-arrow {
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 3px;
+            display: inline-block;
+        }
+        
+        
+        /* Input Search Bar */
+        .search_customer {
+            border: 2px solid rgb(143, 166, 227);
+            border-radius: 25px;
+            padding: 10px 20px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            margin-left: auto;
+            margin-right: auto;
+            width: 40%;
+        }
+
+        /* Table Container */
+        .table-container {
+           max-height:65vh;
+            overflow: auto;
+            margin-bottom: 15px;
+        }
+
+        /* Table Styles */
+        .table {
+            background: #fff;
+            border-radius: 10px;
+            animation: fadeInTable 1s ease-in-out;
+        }
+
+        .table thead {
+            background-color: rgb(34, 0, 255);
+            color: #fff;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(255, 106, 0, 0.1);
+        }
+
+        /* Dropdown Select */
+        .sizeOption {
+            width: auto;
+            padding: 5px 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Align Size Dropdown and Pagination */
+        .row.mt-3.align-items-center {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Pagination */
+        .pagination {
+            margin: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInTable {
+            from {
+                opacity: 0;
+                transform: translateY(-10%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar-container {
+            position: relative;
+        }
+        
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 15%;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            z-index: 1000;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        nav.closed {
+            transform: translateX(-110%);
+        }
+        
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 10vh 10px 0px 10px;
+        }
+        
+        nav ul li {
+            margin-bottom: 15px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #575757;
+        }
+        
+        .toggle-btn {
+            position: fixed;
+            top: 3%;
+            left: 1%; /* Adjust to align with the navbar */
+            background-color: #575757;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            z-index: 1000; /* Ensure the button stays above other elements */
+        }
+        
+        nav.closed + .toggle-btn {
+            left: 1%; /* Keep the button outside the hidden navbar */
+        }
+
+        .content.closed  {
+            width: 97%; 
+            left: 50px; 
+            transition: all 0.3s ease-in-out;
+           
+        }
+
+        .container.closed {
+            width: 100%;
+        }
+        
+        
+        .card, .tableSize {
+            width: 100%; 
+            
+            transition: width 0.3s ease-in-out;
+        }
+        
+        .toggle-btn:hover {
+            background-color: #444;
+        }
+
+        .menu-toggle {
+            
+            display:none;
+        }
+        
+
+
+        .popup-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color:rgb(255, 255, 255);
+            color:rgb(236, 236, 236);
+            
+            border-radius: 5px;
+            width: 80%;
+            z-index: 9999;
+            display: none; /* Hidden by default */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .popup-content {
+            position: relative;
+        }
+        
+        .close-popup {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            border: none;
+            background: transparent;
+            font-size: 18px;
+            color: #721c24;
+            cursor: pointer;
+        }
+        
+        .popup-body {
+            font-size: 14px;
+        }
+        
+        .popup-message .alert {
+            margin: 0;
+        }
+
+
+
+
+                /* Updated .content styles */
+        .content {
+            /* Space left for the nav width */
+            padding: 20px;
+            
+            height: auto; /* Full height of the viewport */
+            width: calc(100% - 17%); /* Full width minus the nav width */
+            position: absolute; /* Prevent overlapping with nav */
+            top: 0;
+            left: 16%; /* Start the content area after the nav */
+            z-index: 1; /* Ensure the content stays behind the nav */
+            color: white; /* Optional: Adjust text color for readability */
+            
+            
+            
+            }
+            .my-container  {
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 10px;
+                width:100%;
+                
+            }
+
+       
+
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%; /* Full width for the navbar on mobile */
+                height: auto; /* Auto height to fit the row layout */
+                background-color: #333; /* Keep the sidebar background color */
+                transform: translateY(0); /* Initially hidden */
+                z-index: 1000;
+                flex-direction: row; /* Display the nav items in a row */
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Top shadow for the row */
+                transition: transform 0.3s ease-in-out;
+            }
+        
+            nav.open {
+                transform: translateY(-110%); 
+            }
+        
+            nav ul {
+                display: flex; /* Use flex to arrange items horizontally */
+                flex-direction: row;
+                justify-content: space-around; /* Space items evenly */
+                list-style-type: none;
+                padding: 10px 20px; /* Adjust padding */
+                margin: 0; /* Remove default margin */
+            }
+        
+            nav ul li {
+                margin: 0; /* Remove bottom margin for row layout */
+            }
+        
+            nav ul li a {
+                text-decoration: none;
+                color: white;
+                font-size: 16px;
+                display: inline-block; /* Inline-block for row layout */
+                padding: 5px 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+        
+            nav ul li a:hover {
+                background-color: #575757;
+            }
+        
+            .toggle-btn {
+                position: fixed;
+                top: 2%;
+                left: 2%;
+                background-color: #575757;
+                color: white;
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 18px;
+                cursor: pointer;
+                 /* Ensure it stays above navbar */
+                transition: background-color 0.3s;
+            }
+
+            .content {
+                margin-left: 0; /* Content takes full width when navbar is hidden */
+                left: 3%;
+                width: calc(100% - 5%);
+                margin-top: 10%;
+                padding: 15px;
+            }
+            .tableSize {
+                
+                max-height:40vh;
+                
+                
+            }
+
+            
+
+            
+
+            .content.open {
+               
+                margin-top: 2%;
+                 
+            }
+           
+            
+        }
+</style>
+    
+</head>
+<body>
+
+
+    <div class="navbar-container">
+        <nav class=" navbar-expand-sm">
+            <ul>
+                <li class="ProductNav"><a href="{% url 'product' %}" class="ProductNav" >Product</a></li>
+                <li class="CustomerNav"><a href="{% url 'customer' %}" style="background-color: rgb(255, 255, 255);color: rgb(65, 17, 185);" class="CustomerNav">Customer</a></li>
+                <li class="BillNav"><a href="{% url 'bill' %}" class="BillNav">bill</a></li>
+              </ul>
+        </nav>
+        <button id="toggleButton" class="toggle-btn">☰</button>
+    </div>
+    
+    
+    
+
+
+       <div class="content">
+
+
+         
+
+
+            <div class="container-fluid mt-5 mb-5  ">
+                <h2 class="text-center mb-4">Customer Management</h2>
+
+                
+                <div class="card shadow-sm mb-5   my-container">
+                    
+                    <div class="card-body">
+                        
+
+                        <form class="row g-3 mt-3" id="addCustomerForm">
+                            <div class="col-md-6 col-sm-6 ">
+                              <label for="customer_name" class="form-label">Customer Name<span style="color:red;"> *</span></label>
+                              <input type="text" maxlength="32" name="customer_name"  class="form-control" id="customer_name"  >
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <label for="email" class="form-label">Email Address<span style="color:red;"> *</span></label>
+                                <input type="text" class="form-control" name="email" id="email" >
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <label for="phone" class="form-label">Phone Number<span style="color:red;"> *</span></label>
+                                <input type="text" class="form-control" name="phone" id="phone"  >
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <label for="address" class="form-label">Address<span style="color:red;"> *</span></label>
+                                <input type="text" class="form-control" name="address" id="address" >
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <label for="company_name" class="form-label">Company Name</label>
+                                <input type="text" maxlength="32" name="company_name"  class="form-control" id="company_name"  >
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <label for="company_gst" class="form-label">GSTIN</label>
+
+                                <input type="text" class="form-control" name="company_gst" id="company_gst" placeholder="00XXXXX0000XXZ0" pattern="( +)*[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}( +)*" title="starting with 2 numbers 5 alphabets,4 numbers,1 alphabet,1 alphabet or number,followed by Z and 1 number or alphabets.note all alphabets are in capital" >
+
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <label for="company_phone" class="form-label">Company Phone Number</label>
+
+                                <input type="text" class="form-control" name="company_phone" id="company_phone"  >
+
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <td><label for="company_address" class="form-label">Company Address</label></td>
+                                <td><input type="text" class="form-control" name="company_address" id="company_address" ></td>
+                            </div>
+                            
+                            <div class="col-12 col-sm-12">
+                                <div class="text-center mt-5">
+                                    <button type="submit" class="btn btn-custom btn-primary">Add Customer</button>
+                                </div>
+                            </div>
+                          </form>
+                    </div>
+                </div>
+
+
+
+                
+        
+         
+
+        
+                <div class="container-fluid  my-container">
+                    <!-- Search Bar -->
+                    <div class="row mb-3">
+                        <input type="text" class="form-control search_customer" placeholder="Search">
+                    </div>
+                
+                    <!-- Table with scrollable div -->
+                    <div class="table-container">
+                        <div class="tableSize">
+                            <table class="table  table-bordered">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>SL NO</th>
+                                        <th>
+                                            Customer Name
+                                            <span class="sort-icons">
+                                                <span class="sort-arrow" data-field="customer_name" data-order="asc" tabindex="0">⬇️</span>
+                                            </span>
+                                        </th>
+                                        <th>
+                                            Email Address
+                                            <span class="sort-icons">
+                                                <span class="sort-arrow" data-field="email" data-order="asc" tabindex="0">⬇️</span>
+                                            </span>
+                                        </th>
+                                        <th style="text-align:right;">
+                                            Phone Number
+                                            <span class="sort-icons">
+                                                <span class="sort-arrow" data-field="phone" data-order="asc" tabindex="0">⬇️</span>
+                                            </span>
+                                        </th>
+                                        <th>
+                                            Address
+                                            <span class="sort-icons">
+                                                <span class="sort-arrow" data-field="address" data-order="asc" tabindex="0">⬇️</span>
+                                            </span>
+                                        </th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customerTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                
+                    <!-- Size Dropdown and Pagination -->
+                    <div class="row mt-3 align-items-center justify-content-between">
+                        <!-- Size Dropdown -->
+                        <div class="col-auto">
+                            <select id="size" class="form-control sizeOption">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                                <option value="60">60</option>
+                                <option value="70">70</option>
+                                <option value="80">80</option>
+                                <option value="90">90</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col-auto">
+                            <navbar aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <!-- Pagination items -->
+                                </ul>
+                            </navbar>
+                        </div>
+                    </div>
+                </div>
+                
+
+
+            </div>
+
+        </div>
+    <div class="modal fade" id="editCustomerModal" tabindex="-1" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCustomerModalLabel">Edit Customer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="row g-3"  id="editCustomerForm">
+                        <input type="hidden" id="edit_customer_id">
+                        <div class="mb-2  col-md-6">
+                            <label for="edit_customer_name" class="form-label">Customer Name</label>
+                            <input type="text" maxlength="32" name="customer_name"  class="form-control" id="edit_customer_name" >
+                        </div>
+                        <div class="mb-2 col-md-6">
+                            <label for="edit_email" class="form-label">Email Address</label>
+                            <input type="text" class="form-control" name="email" id="edit_email" >
+                        </div>
+                        <div class="mb-2 col-md-6">
+                            <label for="edit_phone" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" name="phone"  id="edit_phone" >
+                        </div>
+                        <div class="mb-2 col-md-6">
+                            <label for="edit_address" class="form-label">Address</label>
+                            <input type="text" class="form-control" name="address" id="edit_address" >
+                        </div>
+                        <div class="mb-2 col-md-6">
+                            <label for="edit_company_name" class="form-label">Company Name</label>
+                            <input type="text" maxlength="32" name="company_name"  class="form-control" id="edit_company_name" >
+                        </div>
+                        <div class="mb-2 col-md-6">
+                            <label for="edit_company_gst" class="form-label">GSTIN</label>
+                            <input type="text" class="form-control" name="company_gst"  id="edit_company_gst" placeholder="00XXXXX0000XXZ0" pattern="^\s*[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}\s*" title="starting with 2 numbers 5 alphabets,4 numbers,1 alphabet,1 alphabet or number,followed by Z and 1 number or alphabets.note all alphabets are in capital" >
+                        </div>
+                        <div class="mb-2 col-md-6">
+                            <label for="edit_company_phone" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" name="company_phone"  id="edit_company_phone" >
+                        </div>
+                        <div class="mb-2 col-md-6">
+                            <label for="edit_company_address" class="form-label">Address</label>
+                            <input type="text" class="form-control" name="company_address" id="edit_company_address" >
+                        </div>
+                        <div class="col-12">
+                           <button type="submit" class="btn btn-custom w-100  btn-primary UpdateButton">Update Customer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="popup-message" class="popup-message" style="display: none;">
+        <div class="popup-content">
+            <div class="popup-body">
+                
+            </div>
+        </div>
+    </div>
+
+    
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+    <script>
+        $(document).ready(function () {
+            
+            fetchCustomers();
+
+            function clearErrors(formId) {
+                $(formId + " .error-message").remove();
+            }
+        
+            function showFieldErrors(formId, errors) {
+                clearErrors(formId);
+                $.each(errors, function (field, message) {
+                    $(formId + " #" + field).after(`<div class="error-message text-danger">${message}</div>`);
+                });
+            }
+
+
+            function showPopupMessage(message) {
+                const popupMessage = $("#popup-message");
+                const popupBody = popupMessage.find(".popup-body");
+            
+                
+                popupBody.html(`
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `);
+            
+                
+                popupMessage.fadeIn();
+            
+                
+                setTimeout(function () {
+                    popupMessage.fadeOut();
+                }, 3000);
+            }
+
+            function showPopupMessageForSuccess(message) {
+                const popupMessage = $("#popup-message");
+                const popupBody = popupMessage.find(".popup-body");
+            
+                
+                popupBody.html(`
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `);
+            
+                
+                popupMessage.fadeIn();
+            
+                
+                setTimeout(function () {
+                    popupMessage.fadeOut();
+                }, 3000);
+            }
+
+
+            
+            function closePopup() {
+                
+                $("#popup-message").fadeOut();
+            }
+
+           
+            $("#addCustomerForm").on("submit", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "{% url 'add_customer' %}",
+                    method: "POST",
+                    data: {
+                        customer_name: $("#customer_name").val(),
+                        email: $("#email").val(),
+                        phone: $("#phone").val(),
+                        address: $("#address").val(),
+                        company_name: $("#company_name").val(),
+                        company_gst: $("#company_gst").val(),
+                        company_phone: $("#company_phone").val(),
+                        company_address: $("#company_address").val(),
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function (response) {
+                        if (response.status === "error") {
+
+                            showFieldErrors("#addCustomerForm", response.errors);
+
+                        } else if (response.status === "success") {
+                            clearErrors("#addCustomerForm");
+
+                            showPopupMessageForSuccess(response.message);
+
+                            fetchCustomers();
+                            $("#addCustomerForm")[0].reset();
+                        }
+                    }
+                });
+            });
+
+            
+            $("body").on("click", ".edit-btn", function () {
+                let customer = $(this).data("customer");
+                $("#edit_customer_id").val(customer.id);
+                $("#edit_customer_name").val(customer.customer_name);
+                $("#edit_email").val(customer.email);
+                $("#edit_phone").val(customer.phone);
+                $("#edit_address").val(customer.address);
+                $("#edit_company_name").val(customer.company_name);
+                $("#edit_company_gst").val(customer.company_gst);
+                $("#edit_company_phone").val(customer.company_phone);
+                $("#edit_company_address").val(customer.company_address);
+                clearErrors("#editCustomerForm");
+                clearErrors("#addCustomerForm");
+                $("#editCustomerModal").modal("show");
+            });
+
+            
+            $("#editCustomerForm").on("submit", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "{% url 'edit_customer' %}",
+                    method: "POST",
+                    data: {
+                        id: $("#edit_customer_id").val(),
+                        customer_name: $("#edit_customer_name").val(),
+                        email: $("#edit_email").val(),
+                        phone: $("#edit_phone").val(),
+                        address: $("#edit_address").val(),
+                        company_name: $("#edit_company_name").val(),
+                        company_gst: $("#edit_company_gst").val(),
+                        company_phone: $("#edit_company_phone").val(),
+                        company_address: $("#edit_company_address").val(),
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function (response) {
+
+                        if (response.status === "error") {
+
+                            showFieldErrors("#editCustomerForm", response.errors);
+
+                        } 
+                        else if (response.status === "updated") {
+
+                            clearErrors("#editCustomerForm");
+                            showPopupMessageForSuccess(response.message);
+                            
+                            fetchCustomers($(".search_customer").val(), $(".sort-arrow.active").data("field"), $(".sort-arrow.active").data("order"), 1, $("#size").val());
+            
+                            $("#editCustomerModal").modal("hide");
+                        }
+                    }
+                });
+            });
+            function fetchCustomers(search = "", sort = "id", order = "desc", page = 1, size = 10) {
+                $.ajax({
+                    url: "{% url 'fetch_customers' %}",
+                    method: "GET",
+                    data: { search, sort, order, page, size },
+                    success: function (data) {
+                        let rows = "";
+                        data.customers.forEach((customer, index) => {
+                            rows += `
+                                <tr>
+                                    <td>${(data.current_page - 1) * data.page_size + index + 1}</td>
+                                    <td style="text-align:left;">${customer.customer_name}</td>
+                                    <td style="text-align:left;">${customer.email}</td>
+                                    <td style="text-align:right;">${customer.phone}</td>
+                                    <td style="text-align:left;">${customer.address}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning edit-btn" data-customer='${JSON.stringify(customer)}'>Edit</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                        $("#customerTableBody").html(rows);
+
+
+                        const maxVisiblePages = 3; 
+                        const startPage = Math.max(1, data.current_page - Math.floor(maxVisiblePages / 2));
+                        const endPage = Math.min(data.total_pages, startPage + maxVisiblePages - 1);
+                    
+                        const adjustedStartPage = Math.max(1, endPage - maxVisiblePages + 1);
+            
+                        
+                        let pagination = `
+                            <li class="page-item ${data.current_page === 1 ? 'disabled' : ''}" style="margin-left:3px;margin-right:3px;" >
+                                <a class="page-link" href="#" data-page="${data.current_page - 1}" style="border-radius:15vh;">Previous</a>
+                            </li>`;
+                        for (let i = adjustedStartPage; i <= endPage; i++) {
+                            pagination += `
+                                <li class="page-item ${data.current_page === i ? 'active' : ''}" style="margin-left:3px;margin-right:3px;">
+                                    <a class="page-link" href="#" data-page="${i}" style="border-radius:15vh;">${i}</a>
+                                </li>`;
+                        }
+                        pagination += `
+                            <li class="page-item ${data.current_page === data.total_pages ? 'disabled' : ''} Nextpage" style="margin-left:3px;margin-right:3px;">
+                                <a class="page-link Nextpage" href="#" data-page="${data.current_page + 1}" style="border-radius:15vh;">Next</a>
+                            </li>`;
+                        $(".pagination").html(pagination);
+            
+                        
+                        $("#size").val(data.page_size);
+                    }
+                });
+            }
+            
+            
+            $(document).on("input", ".search_customer", function () {
+                const searchValue = $(this).val();
+                const size = $("#size").val();
+                fetchCustomers(searchValue, $(".sort-arrow.active").data("field"), $(".sort-arrow.active").data("order"), 1, size);
+            });
+            
+            $(document).on("click", ".sort-arrow", function () {
+                const sortColumn = $(this).data("field");
+                const currentOrder = $(this).data("order");
+
+               
+                const newOrder = currentOrder === "asc" ? "desc" : "asc";
+
+                
+                $(this).data("order", newOrder);
+                $(this).html(newOrder === "asc" ? "⬇️" : "⬆️");
+
+                
+                $(".sort-arrow").not(this).removeClass("active").data("order", "asc").html("⬇️");
+
+                
+                $(this).addClass("active");
+
+                
+                const searchValue = $(".search_customer").val();
+                const size = $("#size").val();
+                fetchCustomers(searchValue, sortColumn, newOrder, 1, size);
+            });
+            
+            $(document).on("click", ".pagination .page-link", function (e) {
+                e.preventDefault();
+                const page = $(this).data("page");
+                const searchValue = $(".search_customer").val();
+                const sortColumn = $(".sort-arrow.active").data("field");
+                const sortOrder = $(".sort-arrow.active").data("order");
+                const size = $("#size").val();
+                fetchCustomers(searchValue, sortColumn, sortOrder, page, size);
+            });
+            
+            $(document).on("input", "#size", function () {
+                const size = $(this).val();
+                const searchValue = $(".search_customer").val();
+                fetchCustomers(searchValue, $(".sort-arrow.active").data("field"), $(".sort-arrow.active").data("order"), 1, size);
+            });
+            
+            
+            $(document).ready(function () {
+                fetchCustomers();
+            });
+            
+
+        });
+
+        $(document).on("keydown", function (e) {
+            const focusedElement = document.activeElement;
+            if ($(focusedElement).hasClass("Nextpage")) {
+                if (e.key === "Tab") {
+                    e.preventDefault();    
+                             
+                    $(".ProductNav").focus();
+                                    
+                                    
+                }
+            }else if ($(focusedElement).hasClass("UpdateButton")) {
+                if (e.key === "Tab") {
+                       e.preventDefault();         
+                                    
+                    $(".btn-close").focus();
+                                    
+                                    
+                }
+            }
+        });
+
+        document.querySelectorAll(".sort-arrow").forEach(arrow => {
+            arrow.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    this.click(); 
+                }
+            });
+        });
+        
+    
+       
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navbar = document.querySelector('nav');
+            const toggleButton = document.getElementById('toggleButton');
+            const content = document.querySelector('.content');
+            const container = document.querySelector('.container');
+
+            window.addEventListener('resize', function () {
+                if(window.innerWidth < 768){
+                    navbar.classList.remove('closed');
+                    content.classList.remove('closed');
+                    
+                    
+                }
+            });
+        
+            toggleButton.addEventListener('click', function () {
+
+                if(window.innerWidth < 768){
+                    navbar.classList.toggle("open");
+                    content.classList.toggle("open");
+                   
+                }
+                else{
+
+                    navbar.classList.toggle('closed');
+                    content.classList.toggle('closed');
+                    container.classList.toggle('closed');
+            
+                    
+                    
+                    
+                }
+            });
+        });
+        
+    </script>
+    
+</body>
+</html>
+
+
+
+

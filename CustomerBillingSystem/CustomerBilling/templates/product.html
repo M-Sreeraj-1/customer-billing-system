@@ -1,0 +1,981 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+                    /* Custom CSS */
+            html, body {
+                margin: 0; /* Removes default margin */
+                padding: 0; /* Removes default padding */
+                overflow-y: auto; /* Disables scrolling */
+                overflow-x:hidden;
+                width: 100%; /* Ensures content stays within viewport width */
+                height: 100%; /* Ensures content stays within viewport height */
+            }
+            
+
+            /* Card Styling */
+            .card {
+            border: none;
+            }
+
+            .card-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            }
+
+            .card-body {
+            background-color: #fff;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            }
+
+            /* Form Styling */
+            .form-label {
+            font-weight: bold;
+            color: rgb(77, 51, 178);
+            }
+
+            .form-control {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .form-control:focus {
+            border-color: rgb(0, 72, 255);
+            box-shadow: 0 0 8px rgba(0, 85, 255, 0.4);
+            }
+
+            /* Submit Button Styling */
+            .btn-custom {
+            background-color: rgb(72, 48, 169);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: bounceIn 0.6s ease-in-out;
+            }
+
+            .btn-custom:hover {
+                background-color: rgb(47, 0, 255);
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(30, 30, 183, 0.4);
+            }
+
+            /* Table Styling */
+            .table {
+            width: 100%;
+            margin: auto;
+            border-collapse: collapse;
+            font-size: 1rem;
+            color: #555;
+            }
+
+            .table-borderless td, .table-borderless th {
+            border: none;
+            padding: 12px 8px;
+            }
+
+            /* Heading Styling */
+            h2 {
+                color: rgb(71, 61, 183);
+            font-weight: bold;
+            animation: fadeIn 1s ease-in-out;
+            }
+
+            /* Animations */
+            @keyframes fadeIn {
+            from {
+            opacity: 0;
+            transform: translateY(-10%);
+            }
+            to {
+            opacity: 1;
+            transform: translateY(0);
+            }
+            }
+
+            @keyframes slideInFromBottom {
+            from {
+            opacity: 0;
+            transform: translateY(100%);
+            }
+            to {
+            opacity: 1;
+            transform: translateY(0);
+            }
+            }
+
+            @keyframes bounceIn {
+            0% {
+            opacity: 0;
+            transform: scale(0.8);
+            }
+            50% {
+            opacity: 0.5;
+            transform: scale(1.1);
+            }
+            100% {
+            opacity: 1;
+            transform: scale(1);
+            }
+            }
+
+
+           
+
+
+            /* Container styling */
+            .my-container  {
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 10px;
+                width:100%;
+                
+            }
+
+            /* Search Bar */
+            .search_product {
+                width: 40%;
+                margin: 0 auto 10px;
+                height: 40px;
+                border: 2px solid rgb(143, 166, 227);
+                border-radius: 25px;
+                padding: 10px 15px;
+                transition: box-shadow 0.3s ease, transform 0.3s ease;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                background: #fff;
+            }
+
+            .search_product:focus {
+                outline: none;
+                box-shadow: 0 0 10px rgba(38, 0, 255, 0.8);
+                transform: scale(1.05);
+            }
+
+            /* Table */
+            .tableSize {
+                
+                max-height:65vh;
+                overflow: auto;
+                margin-bottom: 15px;
+                
+            }
+            .table tbody tr:hover {
+                background-color: rgba(255, 106, 0, 0.1);
+            }
+
+            .table {
+                background: #fff;
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            .table thead {
+                background-color: rgb(34, 0, 255);
+                color: #fff;
+            }
+
+            /* Size Dropdown */
+            .sizeOption {
+                width: auto;
+                padding: 5px 10px;
+                border: 2px solid #ccc;
+                border-radius: 5px;
+            }
+            
+
+            /* Aligning dropdown and pagination */
+            .align-items-center {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+
+            .sort-icons {
+                display: inline-block;
+                margin-left: 10px;
+            }
+
+            .sort-arrow {
+                cursor: pointer;
+                font-size: 14px;
+                margin: 0 3px;
+                display: inline-block;
+            }
+
+            .sort-arrow:hover {
+                color: #007bff;
+                font-weight: bold;
+            }
+            .navbar-container {
+                position: relative;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 15%;
+                background-color: #333;
+                color: white;
+                padding: 20px;
+                z-index: 1000;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s ease-in-out;
+            }
+            
+            nav.closed {
+                transform: translateX(-110%);
+            }
+            
+            nav ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 10vh 10px 0px 10px;
+            }
+            
+            nav ul li {
+                margin-bottom: 15px;
+            }
+            
+            nav ul li a {
+                text-decoration: none;
+                color: white;
+                font-size: 18px;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+            
+            nav ul li a:hover {
+                background-color: #575757;
+            }
+            
+            .toggle-btn {
+                position: fixed;
+                top: 3%;
+                left: 1%; /* Adjust to align with the navbar */
+                background-color: #575757;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 18px;
+                transition: background-color 0.3s ease;
+                z-index: 1000; /* Ensure the button stays above other elements */
+            }
+            
+            nav.closed + .toggle-btn {
+                left: 1%; /* Keep the button outside the hidden navbar */
+            }
+
+            .content.closed  {
+                width: 97%; 
+                left: 50px; 
+                transition: all 0.3s ease-in-out;
+               
+            }
+    
+            .container.closed {
+                width: 100%;
+            }
+            
+            
+            .card, .tableSize {
+                width: 100%; 
+                
+                transition: width 0.3s ease-in-out;
+            }
+            
+            .toggle-btn:hover {
+                background-color: #444;
+            }
+            .menu-toggle {
+            
+                display:none;
+            }
+
+
+            
+
+
+            .popup-message {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color:rgb(255, 255, 255);
+                color:rgb(236, 236, 236);
+                
+                border-radius: 5px;
+                width: 80%;
+                z-index: 9999;
+                display: none; /* Hidden by default */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+            
+            .popup-content {
+                position: relative;
+            }
+            
+            .close-popup {
+                position: absolute;
+                top: 5px;
+                right: 10px;
+                border: none;
+                background: transparent;
+                font-size: 18px;
+                color: #721c24;
+                cursor: pointer;
+            }
+            
+            .popup-body {
+                font-size: 14px;
+            }
+            
+            .popup-message .alert {
+                margin: 0;
+            }
+            
+
+
+
+                    /* Updated .content styles */
+            .content {
+             /* Space left for the nav width */
+            padding: 20px;
+            
+            height: auto; /* Full height of the viewport */
+            width: calc(100% - 17%); /* Full width minus the nav width */
+            position: absolute; /* Prevent overlapping with nav */
+            top: 0;
+            left: 16%; /* Start the content area after the nav */
+            z-index: 1; /* Ensure the content stays behind the nav */
+            color: white; /* Optional: Adjust text color for readability */
+            
+           
+           
+            }
+
+            /* Responsive Styles */
+            /* Media query for mobile screens */
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%; /* Full width for the navbar on mobile */
+                height: auto; /* Auto height to fit the row layout */
+                background-color: #333; /* Keep the sidebar background color */
+                transform: translateY(0); /* Initially hidden */
+                z-index: 1000;
+                flex-direction: row; /* Display the nav items in a row */
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Top shadow for the row */
+                transition: transform 0.3s ease-in-out;
+            }
+        
+            nav.open {
+                transform: translateY(-110%); 
+            }
+        
+            nav ul {
+                display: flex; /* Use flex to arrange items horizontally */
+                flex-direction: row;
+                justify-content: space-around; /* Space items evenly */
+                list-style-type: none;
+                padding: 10px 20px; /* Adjust padding */
+                margin: 0; /* Remove default margin */
+            }
+        
+            nav ul li {
+                margin: 0; /* Remove bottom margin for row layout */
+            }
+        
+            nav ul li a {
+                text-decoration: none;
+                color: white;
+                font-size: 16px;
+                display: inline-block; /* Inline-block for row layout */
+                padding: 5px 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+        
+            nav ul li a:hover {
+                background-color: #575757;
+            }
+        
+            .toggle-btn {
+                position: fixed;
+                top: 2%;
+                left: 2%;
+                background-color: #575757;
+                color: white;
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 18px;
+                cursor: pointer;
+                 /* Ensure it stays above navbar */
+                transition: background-color 0.3s;
+            }
+
+            .content {
+                margin-left: 0; /* Content takes full width when navbar is hidden */
+                left: 3%;
+                width: calc(100% - 5%);
+                margin-top: 10%;
+                padding: 15px;
+            }
+            .tableSize {
+                
+                max-height:40vh;
+                
+                
+            }
+
+            .content.open {
+               
+                margin-top: 2%;
+                 
+            }
+            
+            
+        }
+
+    </style>
+</head>
+<body >
+
+    <div class="navbar-container">
+        <nav class="navbar-expand-sm">
+            <ul >
+                
+                <li class="ProductNav"><a href="{% url 'product' %}" style="background-color: rgb(255, 255, 255);color: rgb(65, 17, 185);" class="ProductNav">Product</a></li>
+                <li class="CustomerNav"><a href="{% url 'customer' %}" class="CustomerNav">Customer</a></li>
+                <li class="BillNav"><a href="{% url 'bill' %}" class="BillNav">bill</a></li>
+            </ul>
+        </nav>
+        <button id="toggleButton" class="toggle-btn">☰</button>
+    </div>
+    
+    <div class="content">
+
+        <div class="container-fluid mt-5 ">
+            <h2 class="text-center mb-4">Product Management</h2>
+            
+        
+            <div class="card  mb-5 my-container">
+                
+                <div class="card-body ">
+                    <form id="addProductForm">
+                        <table class="table table-borderless mt-3">
+                            <tr>
+                                <td><label for="product_name" class="form-label">Product Name<span style="color:red;"> *</span></label></td>
+                                <td><input type="text" maxlength="32" name="first_name" class="form-control" id="product_name" ></td>
+                            </tr>
+                           
+                            <tr>
+                                <td><label for="price" class="form-label">Price<span style="color:red;"> *</span></label></td>
+                                <td><input type="number" class="form-control" id="price" step="0.0000000000001" ></td>
+                            </tr>
+                            <tr>
+                                <td><label for="tax" class="form-label">GST(%)<span style="color:red;"> *</span></label></td>
+                                <td><input type="number" class="form-control" id="tax" step="0.0000000000001" ></td>
+                            </tr>
+                        </table>
+                        <div class="text-center mt-5">
+                            <button type="submit"  class="btn btn-custom btn-primary">Add Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="container-fluid my-container">
+                <!-- Search Bar -->
+                <div class="row mb-2">
+                    <input 
+                        type="text" 
+                        class="form-control search_product" 
+                        placeholder="Search"
+                    >
+                </div>
+                
+                <!-- Table -->
+                <div class="row mb-1 tableSize">
+                    <table class="table table-striped table-bordered" id="aa">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>SL NO</th>
+                                <th>
+                                    Product Name
+                                    <span class="sort-arrow" data-field="product_name" data-order="asc" tabindex="0">⬇️</span>
+                                </th>
+                                <th style="text-align:right;">
+                                    Price
+                                    <span class="sort-arrow" data-field="price" data-order="asc" tabindex="0">⬇️</span>
+                                </th>
+                                <th style="text-align:right;">
+                                    GST(%)
+                                    <span class="sort-arrow" data-field="tax" data-order="asc" tabindex="0">⬇️</span>
+                                </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Size Dropdown and Pagination -->
+                <div class="row my-3 align-items-center justify-content-between">
+                    <div class="col-auto">
+                        <select id="size" class="form-control sizeOption">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                            <option value="60">60</option>
+                            <option value="70">70</option>
+                            <option value="80">80</option>
+                            <option value="90">90</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <navbar aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <!-- Pagination Items Here -->
+                            </ul>
+                        </navbar>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+        
+        <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                        <button type="button" class="btn-close CloseButton" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editProductForm">
+                            <input type="hidden" id="edit_product_id">
+                            <div class="mb-3">
+                                <label for="edit_product_name" class="form-label">Product Name</label>
+                                <input type="text" maxlength="32" name="first_name"  class="form-control" id="edit_product_name" >
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="edit_price" class="form-label">Price</label>
+                                <input type="number" class="form-control" id="edit_price" step="0.0000000000001" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_tax" class="form-label">GST(%)</label>
+                                <input type="number" class="form-control" id="edit_tax" step="0.0000000000001" >
+                            </div>
+                            <button type="submit" class="btn btn-custom w-100 btn-primary UpdateButton">Update Product</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="popup-message" class="popup-message" style="display: none;">
+            <div class="popup-content">
+                <div class="popup-body">
+                    
+                </div>
+            </div>
+        </div>
+       
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+    <script>
+        $(document).ready(function () {
+           
+            fetchProducts();
+
+            function clearErrors(formId) {
+                $(formId + " .error-message").remove();
+            }
+        
+            function showFieldErrors(formId, errors) {
+                clearErrors(formId);
+                $.each(errors, function (field, message) {
+                    $(formId + " #" + field).after(`<div class="error-message text-danger">${message}</div>`);
+                });
+            }
+
+
+            function showPopupMessage(message) {
+                const popupMessage = $("#popup-message");
+                const popupBody = popupMessage.find(".popup-body");
+            
+                
+                popupBody.html(`
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `);
+            
+                
+                popupMessage.fadeIn();
+            
+                
+                setTimeout(function () {
+                    popupMessage.fadeOut();
+                }, 3000);
+            }
+
+            function showPopupMessageForSuccess(message) {
+                const popupMessage = $("#popup-message");
+                const popupBody = popupMessage.find(".popup-body");
+            
+                
+                popupBody.html(`
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `);
+            
+                
+                popupMessage.fadeIn();
+            
+                
+                setTimeout(function () {
+                    popupMessage.fadeOut();
+                }, 3000);
+            }
+            
+            function closePopup() {
+                
+                $("#popup-message").fadeOut();
+            }
+
+          
+                $("#addProductForm").on("submit", function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: "{% url 'add_product' %}",
+                        method: "POST",
+                        data: {
+                            product_name: $("#product_name").val(),
+                            
+                            price: $("#price").val(),
+                            tax: $("#tax").val(),
+                            csrfmiddlewaretoken: "{{ csrf_token }}"
+                        },
+                        success: function (response) {
+
+                            if (response.status === "error") {
+
+                                showFieldErrors("#addProductForm", response.errors);
+
+
+                                
+                             
+                            
+
+                            } else if (response.status === "success") {
+                                clearErrors("#addProductForm");
+
+                                showPopupMessageForSuccess(response.message);
+
+                                fetchProducts();
+                                $("#addProductForm")[0].reset();
+                               
+                            }
+                        },
+                        error: function () {
+                            
+                            showPopupMessage("An error occurred while processing your request.");
+                        }
+                    });
+                });
+
+
+             
+            $("body").on("click", ".edit-btn", function () {
+                let product = $(this).data("product");
+                $("#edit_product_id").val(product.id);
+                $("#edit_product_name").val(product.product_name);
+                $("#edit_price").val(product.price);
+                $("#edit_tax").val(product.tax);
+                clearErrors("#editProductForm");
+                clearErrors("#addProductForm");
+                $("#editProductModal").modal("show");
+               
+            });
+
+           
+            $("#editProductForm").on("submit", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "{% url 'edit_product' %}",
+                    method: "POST",
+                    data: {
+                        id: $("#edit_product_id").val(),
+                        product_name: $("#edit_product_name").val(),
+                        price: $("#edit_price").val(),
+                        tax: $("#edit_tax").val(),
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function (response) {
+                        if (response.status === "error") {
+                            
+                            
+                            showFieldErrors("#editProductForm", response.errors);
+                         
+                            
+
+                        } else if (response.status === "updated") {
+
+                            clearErrors("#editProductForm");
+
+                            
+                            showPopupMessageForSuccess(response.message);
+                            
+                            
+                            
+                            const size = $("#size").val();
+            
+                            fetchProducts($(".search_product").val(), $(".sort-arrow.active").data("field"), $(".sort-arrow.active").data("order"), 1, size);
+                            $("#editProductModal").modal("hide");
+                        }
+                    }
+                });
+            });
+
+            
+
+
+
+            function fetchProducts(search = "", sort = "", order = "asc", page = 1, size = 10) {
+                $.ajax({
+                    url: "{% url 'fetch_products' %}",
+                    method: "GET",
+                    data: { search: search, sort: sort, order: order, page: page, size: size },
+                    success: function (data) {
+                        let rows = "";
+                        data.products.forEach((product, index) => {
+                            rows += `
+                                <tr>
+                                    <td>${(data.page - 1) * data.size + index + 1}</td>
+                                    <td style="text-align:left;">${product.product_name}</td>
+                                    <td style="text-align:right;">${product.price}</td>
+                                    <td style="text-align:right;">${product.tax}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning edit-btn" data-product='${JSON.stringify(product)}'>Edit</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                        $("#productTableBody").html(rows);
+            
+                        
+                        updatePagination(data.total, data.page, data.size);
+                    },
+                    error: function () {
+                        console.error("Failed to fetch products");
+                    }
+                });
+            }
+            
+            function updatePagination(total, page, size) {
+                const totalPages = Math.ceil(total / size);
+                let paginationHtml = "";
+                const maxVisiblePages = 3; 
+                const startPage = Math.max(1, page - Math.floor(maxVisiblePages / 2));
+                const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+                const adjustedStartPage = Math.max(1, endPage - maxVisiblePages + 1);
+
+                if (page === 1) {
+                    paginationHtml += `<li class="page-item disabled" style="margin-left:3px;margin-right:3px;">
+                    <a class="page-link" href="#" data-page="" style="border-radius:15vh;" >Previous</a>
+                    </li>`;
+                }
+            
+                if (page > 1) {
+                    paginationHtml += `<li class="page-item" style="margin-left:3px;margin-right:3px;">
+                    <a class="page-link" href="#" data-page="${page - 1}" style="border-radius:15vh;" >Previous</a>
+                    </li>`;
+                }
+            
+                for (let i = adjustedStartPage; i <= endPage; i++) {
+                    paginationHtml += `<li class="page-item ${i === page ? "active" : ""}" style="margin-left:3px;margin-right:3px;">
+                                            <a class="page-link" href="#" data-page="${i}" style="border-radius:15vh;" >${i}</a>
+                                        </li>`;
+                }
+            
+                if (page < totalPages) {
+                    paginationHtml += `<li class="page-item Nextpage" style="margin-left:3px;margin-right:3px;">
+                    <a class="page-link Nextpage" href="#" data-page="${page + 1}" style="border-radius:15vh;" >Next</a>
+                    </li>`;
+                }
+
+                if (page === totalPages) {
+                    paginationHtml += `<li class="page-item disabled Nextpage" style="margin-left:3px;margin-right:3px;">
+                    <a class="page-link  Nextpage" href="#" data-page="" style="border-radius:15vh;" >Next</a>
+                    </li>`;
+                }
+
+            
+                $(".pagination").html(paginationHtml);
+                $("#size").val(size);
+            }
+            
+            $(".pagination").on("click", ".page-link", function (e) {
+                e.preventDefault();
+                const page = $(this).data("page");
+                const size = $("#size").val();
+                fetchProducts($(".search_product").val(), $(".sort-arrow.active").data("field"), $(".sort-arrow.active").data("order"), page, size);
+            });
+
+            $("#size").on("change", function () {
+                const selectedSize = $(this).val();  
+                fetchProducts($(".search_product").val(), $(".sort-arrow.active").data("field"), $(".sort-arrow.active").data("order"), 1, selectedSize);
+            });
+            
+            
+           
+            
+           
+            
+            $(".sort-arrow").on("click", function () {
+                const sortColumn = $(this).data("field");
+                const currentOrder = $(this).data("order");
+
+               
+                const newOrder = currentOrder === "asc" ? "desc" : "asc";
+
+                
+                $(this).data("order", newOrder);
+                $(this).html(newOrder === "asc" ? "⬇️" : "⬆️");
+
+                
+                $(".sort-arrow").not(this).removeClass("active").data("order", "asc").html("⬇️");
+
+                
+                $(this).addClass("active");
+
+                
+                const searchValue = $(".search_product").val();
+                const size = $("#size").val();
+                fetchProducts(searchValue, sortColumn, newOrder, 1, size);
+            });
+
+            $(".search_product").on("input", function () {
+                const searchValue = $(this).val();
+                fetchProducts(searchValue, $(".sort-arrow.active").data("field"), $(".sort-arrow.active").data("order"), 1, $("#size").val());
+            });
+            
+            $(document).ready(function () {
+                fetchProducts();
+            });
+            
+            
+            
+        });
+
+
+        $(document).on("keydown", function (e) {
+            const focusedElement = document.activeElement;
+            if ($(focusedElement).hasClass("Nextpage")) {
+                if (e.key === "Tab") {
+                       e.preventDefault();         
+                                    
+                    $(".ProductNav").focus();
+                                    
+                                    
+                }
+            }else if ($(focusedElement).hasClass("UpdateButton")) {
+                if (e.key === "Tab") {
+                       e.preventDefault();         
+                                    
+                    $(".btn-close").focus();
+                                    
+                                    
+                }
+            }
+        });
+
+
+        document.querySelectorAll(".sort-arrow").forEach(arrow => {
+            arrow.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    this.click(); 
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navbar = document.querySelector('nav');
+            const toggleButton = document.getElementById('toggleButton');
+            const content = document.querySelector('.content');
+            const container = document.querySelector('.container');
+            window.addEventListener('resize', function () {
+                if(window.innerWidth < 768){
+                    navbar.classList.remove('closed');
+                    content.classList.remove('closed');
+                    
+                    
+                }
+            });
+        
+            toggleButton.addEventListener('click', function () {
+
+
+                if(window.innerWidth < 768){
+                    navbar.classList.remove('closed');
+                    content.classList.remove('closed');
+                    navbar.classList.toggle("open");
+                    content.classList.toggle("open");
+                    
+                }
+                else{
+
+                    navbar.classList.toggle('closed');
+                    content.classList.toggle('closed');
+                    container.classList.toggle('closed');
+            
+                    
+                    
+                }
+            });
+        });
+        
+    </script>
+    
+   
+</body>
+</html>
+

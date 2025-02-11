@@ -1,0 +1,2353 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Template</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <style>
+        html, body {
+            margin: 0; /* Removes default margin */
+            padding: 0; /* Removes default padding */
+            overflow-y: auto; /* Disables scrolling */
+            overflow-x:hidden;
+            width: 100%; /* Ensures content stays within viewport width */
+            height: 100%; /* Ensures content stays within viewport height */
+        }
+        
+        
+            
+            .navbar {
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 15px 30px;
+                background: linear-gradient(90deg, rgb(0, 0, 0), rgb(0, 0, 0));
+                animation: fadeIn 1s ease-in-out;
+            }
+            
+            
+            .navbar-brand img {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .navbar-brand img:hover {
+                transform: scale(1.1);
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+            }
+            
+           
+            .navbar-toggler {
+                border: none;
+                background-color: rgba(255, 255, 255, 0.2);
+                padding: 5px;
+                transition: transform 0.3s ease, background-color 0.3s ease;
+            }
+            
+            .navbar-toggler:hover {
+                background-color: rgba(255, 255, 255, 0.4);
+                transform: rotate(90deg);
+            }
+            
+            
+            .nav-pills {
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                padding: 5px;
+                border-radius: 30px;
+                animation: slideInFromLeft 0.8s ease-in-out;
+            }
+            
+            
+            .nav-pills .nav-link {
+                color: #555;
+                font-weight: bold;
+                transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            }
+            
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes slideInFromLeft {
+                from {
+                    opacity: 0;
+                    transform: translateX(-100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            
+        
+        
+        
+        
+        
+            
+            .invoice-container {
+                background-color:rgb(249, 249, 249);
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 30px;
+                animation: fadeIn 1s ease-in-out;
+                height:100%;
+            }
+            
+            .invoice-container h2 {
+                color: #333;
+                text-align: center;
+                font-family: 'Roboto', sans-serif;
+            }
+            
+           
+            .form-label {
+                font-weight: bold;
+                font-family: 'Arial', sans-serif;
+                color: #555;
+            }
+            
+            .form-control {
+                border-radius: 5px;
+                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .form-control:focus {
+                transform: scale(1.02);
+                box-shadow: 0 0 8px rgba(100, 149, 237, 0.6);
+                outline: none;
+            }
+            
+            
+            #invoice-table {
+                margin-top: 0px;
+                border-collapse: separate;
+                border-spacing: 0 10px;
+            }
+            
+            #invoice-table th {
+                color: white;
+                background-color: rgb(255, 106, 0);
+                border: none;
+                padding: 10px;
+                text-align: center;
+            }
+            
+            #invoice-table td {
+                padding: 10px;
+                text-align: center;
+            }
+            
+            #invoice-table .form-control {
+                text-align: center;
+            }
+            
+            
+            .buttons button {
+                font-family: 'Arial', sans-serif;
+                font-weight: bold;
+                transition: transform 0.3s ease, background-color 0.3s ease;
+            }
+            
+            .buttons .btn-success:hover {
+                background-color: #28a745;
+                transform: scale(1.1);
+            }
+            
+            .buttons .btn-primary:hover {
+                background-color: #007bff;
+                transform: scale(1.1);
+            }
+            
+            
+            .total h5 {
+                color: #444;
+                font-family: 'Roboto', sans-serif;
+                text-align: right;
+                animation: slideInFromRight 0.8s ease-in-out;
+            }
+            
+           
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes slideInFromRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(50%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            
+        
+            
+            /* Search and Sort Row */
+            
+            
+            /* Search input */
+            
+            
+            .search_bill_customer:focus {
+                transform: scale(1.05);
+                box-shadow: 0 0 8px rgba(100, 149, 237, 0.6);
+                outline: none;
+            }
+            
+            /* Dropdown select */
+            
+            
+            
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            
+        
+        
+        
+        .container-view {
+            max-width: 93%;
+            margin: auto;
+            background: #fff;
+            padding: 30px 30px 30px 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            margin-top:2%;
+            max-height:84vh;
+            
+            
+        }
+
+        
+        body{margin-top:0px;
+            background-color: #f7f7ff;
+            }
+            
+            
+            
+        
+        
+        
+        .container-view p {
+            text-align: center;
+            color: #777;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.2rem;
+            width:100%;
+        }
+        
+        /* Display container */
+        
+        
+        /* Table styles */
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            
+            
+        }
+        
+        .table th {
+            background-color: rgb(0, 0, 0);
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .table td {
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .table-striped tbody tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: #e6f7ff;
+        }
+        
+        
+        /* Card styles */
+        
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInFromBottom {
+            from {
+                opacity: 0;
+                transform: translateY(50%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar-container {
+            position: relative;
+        }
+        
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 15%;
+            background-color: #333;
+            color: white;
+            z-index: 1000;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        nav.closed {
+            transform: translateX(-110%);
+        }
+        
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 10vh 10px 0px 10px;
+        }
+        
+        nav ul li {
+            margin-bottom: 15px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #575757;
+        }
+        
+        .toggle-btn {
+            position: fixed;
+            top: 3%;
+            left: 1%; /* Adjust to align with the navbar */
+            background-color: #575757;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            z-index: 1000; /* Ensure the button stays above other elements */
+        }
+        
+        nav.closed + .toggle-btn {
+            
+            left: 1%;
+            transition: width 0.3s ease-in-out;
+            
+        }
+
+        
+        
+        
+        
+        .content.expanded {
+            width: 97%; 
+            left: 50px;
+        }
+
+        .container-view.closed{
+            max-width: 100%;
+        }
+        .carousel-inner.closed{
+            max-width: 150%;
+        }
+        
+        .toggle-btn:hover {
+            background-color: #444;
+        }
+        
+        .menu-toggle {
+            
+            display:none;
+        }
+
+
+
+                /* Updated .content styles */
+        .content {
+        margin-left: 0px; /* Space left for the nav width */
+        padding: 20px;
+        
+        height: auto; /* Full height of the viewport */
+        width: calc(100% - 15%); /* Full width minus the nav width */
+        position: absolute; /* Prevent overlapping with nav */
+        top: 0;
+        left: 16%; /* Start the content area after the nav */
+        z-index: 1; /* Ensure the content stays behind the nav */
+        color: white; /* Optional: Adjust text color for readability */
+        margin-bottom:0vh;
+        transition: width 0.3s ease-in-out;
+       
+        }
+        
+
+
+
+        .popup-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color:rgb(255, 255, 255);
+            color:rgb(236, 236, 236);
+            
+            border-radius: 5px;
+            width: 80%;
+            z-index: 9999;
+            display: none; /* Hidden by default */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .popup-content {
+            position: relative;
+        }
+        
+        .close-popup {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            border: none;
+            background: transparent;
+            font-size: 18px;
+            color: #721c24;
+            cursor: pointer;
+        }
+        
+        .popup-body {
+            font-size: 14px;
+        }
+        
+        .popup-message .alert {
+            margin: 0;
+        }
+
+        .search_bill_customer{
+            width:25%;
+            min-width:150px;
+            border-radius:25px;
+            height:35px;
+            margin-left:20%;
+            
+        }
+        form {
+            margin-top: 0;
+        }
+        .invoice-container h2 {
+            margin-bottom: 5vh;
+        }
+        .dropdown-menu {
+            display: none;
+            max-height: 120px;
+            overflow-y: auto;
+            width: 96%;
+        }
+        .product-details {
+            margin-top: 1%;
+            max-height: 45vh;
+            height:10%;
+            overflow: auto;
+        }
+        .table th, .table td {
+            text-align: right;
+        }
+        .table th:first-child, .table td:first-child {
+            text-align: left;
+        }
+        .test {
+            display: none;
+            max-height: 120px;
+            overflow-y: auto;
+            width: 30%;
+        }
+        .quantity {
+            text-align: right;
+        }
+        .buttons {
+            margin-top: 0vh;
+            margin-left: 0vh;
+            gap: 3rem;
+        }
+        .btn-danger {
+            height: auto;
+            width: auto;
+        }
+        .company {
+            color: black;
+            display: none;
+        }
+        /* Size Dropdown */
+        
+        
+
+        /* Aligning dropdown and pagination */
+        .align-items-center {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .my-container  {
+            padding: 20px;
+            
+            border-radius: 10px;
+            width:100%;
+           
+            
+        }
+
+        .checkContainer{
+            min-height:10vh;
+            max-height:77vh;
+            overflow:auto;
+            
+        }
+        .prev1Button{
+            margin-top:2%;
+            margin-left:10%;
+            background-color:black;
+            width:40px;
+            height:40px;
+            border-radius:25px;
+        } 
+        .prevButton{
+            margin-top:3%;
+            margin-left:5%;
+            background-color:black;
+            width:40px;
+            height:40px;
+            border-radius:25px;
+        }
+        .billButton{
+            margin-top:2%;
+            margin-right:10%;
+            background-color:black;
+            width:90px;
+            height:40px;
+            border-radius:25px;
+        }
+
+        
+
+       
+
+
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%; /* Full width for the navbar on mobile */
+                height: auto; /* Auto height to fit the row layout */
+                background-color: #333; /* Keep the sidebar background color */
+                transform: translateY(0); /* Initially hidden */
+                z-index: 1000;
+                flex-direction: row; /* Display the nav items in a row */
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Top shadow for the row */
+                transition: transform 0.3s ease-in-out;
+            }
+        
+            nav.open {
+                transform: translateY(-110%); /* Show navbar on toggle */
+            }
+        
+            nav ul {
+                display: flex; /* Use flex to arrange items horizontally */
+                flex-direction: row;
+                justify-content: space-around; /* Space items evenly */
+                list-style-type: none;
+                padding: 10px 20px; /* Adjust padding */
+                margin: 0; /* Remove default margin */
+            }
+        
+            nav ul li {
+                margin: 0; /* Remove bottom margin for row layout */
+            }
+        
+            nav ul li a {
+                text-decoration: none;
+                color: white;
+                font-size: 16px;
+                display: inline-block; /* Inline-block for row layout */
+                padding: 5px 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+        
+            nav ul li a:hover {
+                background-color: #575757;
+            }
+        
+            .toggle-btn {
+                position: fixed;
+                top: 2%;
+                left: 2%;
+                background-color: #575757;
+                color: white;
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 18px;
+                cursor: pointer;
+                 /* Ensure it stays above navbar */
+                transition: background-color 0.3s;
+            }
+
+            .content {
+                margin-left:0px; /* Content takes full width when navbar is hidden */
+                left: 1%;
+                width: calc(100% );
+                padding: 15px;
+                top:15%;
+                height:auto;
+              
+               
+            }
+            .carousel{
+                width:100%;
+               
+            }
+           
+            .invoice-container  {
+                overflow: auto;
+            }
+            .my-container  {
+                padding: 20px;
+                
+                border-radius: 10px;
+                width:100%;
+                margin-top:5%;
+                
+            }
+            .prevButton{
+                
+                width:30px;
+                height:30px;
+                
+            }
+            .billButton{
+                
+                
+                width:80px;
+                height:30px;
+                
+            }
+            .content.open {
+               
+                margin-top: calc(100% - 110%);
+                 
+            }
+            
+            
+        }
+
+        .dropdown-item.focused {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        
+    </style>
+</head>
+<body>
+
+    <div class="navbar-container">
+        <nav class=" navbar-expand-sm">
+            <ul>
+                <li class ="ProductNav"><a href="{% url 'product' %}"  class="ProductNav">Product</a></li>
+                <li class ="CustomerNav"><a href="{% url 'customer' %}" class="CustomerNav">Customer</a></li>
+                <li class ="BillNav"><a href="{% url 'bill' %}" style="background-color: rgb(255, 255, 255); color: rgb(65, 17, 185);" class="BillNav">Bill</a></li>
+            </ul>
+        </nav>
+        <button id="toggleButton" class="toggle-btn">☰</button>
+    </div>
+    
+    <div class="content">
+      
+        <div style="margin-top:0;" >
+            <button class="carousel-control-prev prevButton" type="button" id="show1" data-bs-target="#carouselExampleFade" data-bs-slide="prev" fdprocessedid="1olgiw" style="margin-top:2%;margin-left:10%;background-color:black;width:40px;height:40px;border-radius:25px;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            
+            </button>
+
+            <button class="carousel-control-prev prev1Button" type="button" id="show2" data-bs-target="#carouselExampleFade" data-bs-slide="prev" fdprocessedid="1olgiw" style="margin-top:3%;margin-left:5%;background-color:black;width:40px;height:40px;border-radius:25px;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            
+            </button>
+            
+            <button class="carousel-control-next billButton" type="button" id="show" data-bs-target="#carouselExampleFade" data-bs-slide="next" fdprocessedid="38c3b9" style="margin-top:2%;margin-right:10%;background-color:black;width:90px;height:40px;border-radius:25px;">
+                <span class="">Create bill</span>
+            </button>
+          
+            <div id="carouselExampleFade" class="carousel slide">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <form>
+                            {% csrf_token %}
+                            <div id="submitBill">
+                                <div class="invoice-container container-fluid">
+                                    <h2>Invoice</h2>
+                                    <div class="customer-details">
+                                        <div class="row">
+                                            <div class="col position-relative ">
+                                                <input type="hidden" id="customerphone" class="form-control "  >
+                                                <input type="hidden" id="companyname" class="form-control "  >
+
+                                                <label for="customer-name" class="form-label">Customer Name</label>
+                                                <input type="text" id="customer-name" class="form-control customer-name dropdown-toggle" placeholder="Enter customer name" autocomplete="off" onfocus="fetchAllCustomers(this)" onclick="fetchAllCustomers(this)" data-bs-toggle="dropdown dropdown-menu" aria-expanded="false">
+                                                <ul class="dropdown-menu" id="customer-suggestions" ></ul>
+                                            </div>
+                                            <div class="col">
+                                                <label for="current-date" class="form-label">Date</label>
+                                                <input type="date" id="current-date" class="form-control" name="get_date">
+                                            </div>
+                                        </div>
+                                        <p class="company"></p>
+                                    </div>
+                                    <div class="product-details ">
+                                        <table id="invoice-table" class="table table-striped table-bordered">
+                                            <thead class="table-primary">
+                                                <tr >
+                                                    <th>Product Name</th>
+                                                    <th>Quantity</th>
+                                                    <th>GST</th>
+                                                    <th>Price</th>
+                                                    <th>Subtotal</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="product-tbody" >
+                                                <tr   title="New row (Shift + R)">
+                                                    <td class="repeat" >
+                                                        <input type="hidden"  class="form-control productID"  >
+                                                        <input type="text" class="form-control product-name  dropdown-toggle" placeholder="Product Name" oninput="fetchProductSuggestions(this)" onclick="fetchAllProducts(this)" autocomplete="off" onfocus="fetchAllProducts(this)"  data-bs-toggle="dropdown dropdown-menu" aria-expanded="false">
+                                                        <ul class="dropdown-menu test"></ul>
+                                                        
+                                                    </td>
+                                                    <td><input type="number" class="form-control quantity" min="1" value=""  oninput="validateQuantity(this)" ></td>
+                                                    <td class="tax" style="text-align:right;">0</td>
+                                                    <td class="price" style="text-align:right;">0</td>
+                                                    <td class="subtotal" style="text-align:right;">0</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger cancel" onclick="removeRow(this)">x</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="total mt-3">
+                                        <h5>GST Total: &#8377; <span id="tax-total">0</span></h5>
+                                        <h5>Grand Total: &#8377; <span id="grand-total">0</span></h5>
+                                    </div>
+                                    <div class="buttons d-flex justify-content-end">
+                                        <button type="button" class="btn btn-primary SubmitAndPrint"  title="Shift + P" onclick="submitAndPrint()">Submit & Print</button>
+                                        <button type="button" class="btn btn-primary Submit" title="Shift + S" onclick="submitInvoice()">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                
+                    <div class="carousel-item ">
+
+                        <div class="container-fluid my-container" style="margin-bottom:3%;">
+                            <div class="row" >
+                                <input type="text" class="form-control search_bill_customer" placeholder="Search Customer " >
+                                
+                            </div>
+                            
+                    
+                    
+                    
+                            <div class="container-view container-fluid" >
+                                <div class="checkContainer table-responsive">
+                                    <table class="table table-light table-hover">
+                                        <thead>
+                                            <tr class="table-sucess">
+                                                <th>SL NO</th>
+                                                <th style="text-align:left;">
+                                                    Customer Name 
+                                                    <span id="customer__customer_name_arrow" class="sort-arrow" style="cursor: pointer;" onclick="sortTable('customer__customer_name')" tabindex="0">⬆️</span>
+                                                </th>
+                                                <th style="text-align:right;">
+                                                    Date
+                                                    <span id="date_arrow" class="sort-arrow" style="cursor: pointer;" onclick="sortTable('date')" tabindex="0">⬆️</span>
+                                                </th>
+                                                <th style="text-align:right;">
+                                                    Items 
+                                                    <span id="item_count_arrow" class="sort-arrow" style="cursor: pointer;" onclick="sortTable('item_count')" tabindex="0">⬆️</span>
+                                                </th>
+                                                <th style="text-align:right;">
+                                                    Grand Total 
+                                                    <span id="grand_total_arrow" class="sort-arrow" style="cursor: pointer;" onclick="sortTable('grand_total')" tabindex="0">⬆️</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+
+
+                            <div class="row my-3 align-items-center justify-content-between">
+                                <div class="col-auto " style="margin-left:5%">
+                                    <select id="size" class="form-control sizeOption">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="40">40</option>
+                                        <option value="50">50</option>
+                                        <option value="60">60</option>
+                                        <option value="70">70</option>
+                                        <option value="80">80</option>
+                                        <option value="90">90</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto" style="margin-right:4%">
+                                    <navbar aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-center">
+                                            
+                                        </ul>
+                                    </navbar>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                
+                
+            </div>
+            
+        </div>
+    </div>
+
+        
+        
+
+       <!-- Modal -->
+       <div class="modal fade" id="billingDetailsModal" tabindex="-1" aria-labelledby="billingDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                    <div class="modal-header" style="background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+                        <h5 class="modal-title" id="billingDetailsModalLabel" style="font-size: 1.2rem; font-weight: bold;">
+                            Billing Details
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalBodyContent" style="padding: 20px; max-height: 70vh; overflow-y: auto;">
+                        <!-- Content will be dynamically inserted here -->
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid #dee2e6; background-color: #f8f9fa;">
+                        <button type="button" class="btn btn-dark" onclick="printInvoice()" style="background-color: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px;">
+                            <i class="fa fa-print"></i> Print
+                        </button>
+                        <button type="button" class="btn btn-secondary CloseButton" data-bs-dismiss="modal" style="padding: 8px 20px;">Close</button>
+                    </div>
+                </div>
+            </div>
+       </div>
+
+<div id="popup-message" class="popup-message" style="display: none;">
+    <div class="popup-content">
+        <div class="popup-body">
+           
+        </div>
+    </div>
+</div>
+
+    
+
+
+    
+        
+        <!-- Include jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+        <script>
+
+            
+            function fetchAllCustomers(input) {
+                $.ajax({
+                    url: "{% url 'fetch_all_customers' %}",
+                    method: "GET",
+                    success: function (data) {
+                        const customers = data.customers;
+                        let suggestionHTML = "";
+                        customers.forEach(customer => {
+                            suggestionHTML += `<li class="dropdown-item" data-name="${customer.customer_name}" data-companyname="${customer.company_name}" data-phone="${customer.phone}">${customer.customer_name}</li>`;
+                        });
+                        const dropdown = $(input).siblings(".dropdown-menu");
+                        dropdown.html(suggestionHTML).show();
+                    }
+                });
+            }
+
+
+        </script>
+        
+        <script>
+            let productData = {};
+            let grandTotal = 0;
+
+            function fetchProductSuggestions(input) {
+                const query = input.value;
+
+                if (query.length > 0) {
+                    $.ajax({
+                        url: "{% url 'search_products' %}",
+                        method: "GET",
+                        data: { query: query },
+                        success: function (data) {
+                            populateDropdown(input, data.products);
+                        }
+                    });
+                } else {
+                    $(input).siblings(".dropdown-menu").hide();
+                    
+                }
+            }
+
+            function fetchAllProducts(input) {
+                $(".dropdown-menu").hide();
+                $.ajax({
+                    url: "{% url 'search_products' %}",
+                    method: "GET",
+                    data: { query: "" }, 
+                    success: function (data) {
+                        populateDropdown(input, data.products);
+                    }
+                });
+            }
+
+            function populateDropdown(input, products) {
+                let suggestionHTML = "";
+                products.forEach(product => {
+                    suggestionHTML += `<li class="dropdown-item" 
+                                        onclick="selectProduct(this,'${product.id}', '${product.product_name}', ${product.tax}, ${product.price})">
+                                        ${product.product_name}
+                                    </li>`;
+                });
+                $(".dropdown-menu").hide();
+                const dropdown = $(input).siblings(".dropdown-menu");
+                dropdown.html(suggestionHTML).show();
+                adjustDropdownPosition(input);
+            }
+            
+            
+            $(document).ready(function () {
+                function adjustDropdownPosition(input) {
+                    const $input = $(input);
+                    const $dropdown = $input.siblings(".dropdown-menu");
+            
+                    if ($dropdown.length === 0) return;
+            
+                    const inputRect = $input[0].getBoundingClientRect();
+                    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+                    const screenWidth = window.innerWidth || document.documentElement.clientWidth;
+
+                    let offset = 0;
+                    if (screenWidth > 768) { 
+                        
+                        offset = -20;
+                    } else {
+                        
+                        offset = -135;
+                    }
+            
+                    $dropdown.css({
+                        position: "absolute",
+                        top: inputRect.bottom + scrollTop+offset+ "px", 
+                        
+                        width: inputRect.width + "px",
+                        zIndex: 1050,
+                        display: "block"
+                    });
+                }
+            
+                $(document).on("focus", ".product-name", function (e) {
+                    if (e.originalEvent && e.originalEvent.type === "focus") {
+                        adjustDropdownPosition(this);
+                    }
+                });
+            
+                
+            }); 
+            
+            
+            
+
+        
+            
+            
+            
+           
+                
+            
+
+            function selectProduct(element, id, name, tax, price) {
+                let isDuplicate = false; 
+                const currentRow = $(element).closest("tr");
+                
+            
+                $("#product-tbody tr").not(currentRow).each(function () {
+                    const productName = $(this).find(".product-name").val();
+                    if (productName === name) {
+                       
+                        
+                        showPopupMessage('This Product has already been chosen.');
+                        const row = $(element).closest("tr");
+                        const productInput = row.find(".product-name");
+                        productInput.focus(); 
+                       
+                         
+                        isDuplicate = true;
+                        return false;
+                    }
+                    
+                });
+
+                $("#product-tbody tr").each(function () {
+                    
+                    const customerInput =$(".customer-name").val().trim();
+            
+                     if(!customerInput){
+                        showPopupMessage('customer name required.');
+                        const row = $(element).closest("tr");
+                        const productInput = row.find(".product-name");
+                        productInput.focus(); 
+                        isDuplicate = true;
+                        return false;
+                    }
+                    
+                });
+            
+                if (!isDuplicate) {
+                    
+                    const row = $(element).closest("tr");
+                    productData[name] = {id:id, tax: tax, price: price };
+                    const productValInput=row.find(".product-name").val();
+                    const productIdValInput=row.find(".productID").val();
+                    const productValueInput=row.find(".price").text();
+                    const productValueTaxInput=row.find(".tax").text();
+                    if (productIdValInput === id ){
+                        const productInput=row.find(".product-name").val(name);
+                        row.find(".tax").text(tax);
+                        row.find(".price").text(price);
+                        
+                        row.find(".productID").val(id);
+                        updateSubtotal(row);
+                        $(element).parent().hide();
+                    
+                        const quantityInput = row.find(".quantity");
+                        
+                        quantityInput.focus();
+                    }
+                    else{
+                        const productInput=row.find(".product-name").val(name);
+                        row.find(".tax").text(tax);
+                        row.find(".price").text(price);
+                        row.find(".productID").val(id);
+                        updateSubtotal(row);
+                        $(element).parent().hide();
+                        row.find(".quantity").val(" ");
+                        const quantityInput = row.find(".quantity");
+                        
+                        quantityInput.focus();
+                    }
+                    
+                    
+                    
+                   
+                }
+            }
+            
+            
+            function checkAndAddRow(row) {
+                 
+                const isLastRow = row.is(':last-child');
+            
+                const productName = row.find(".product-name").val();
+                const quantity = row.find(".quantity").val();
+            
+                if (isLastRow && productName && quantity > 0) {
+                    addRow();
+                }
+            }
+
+            function updateSubtotal(row) {
+                let quantity = parseInt(row.find(".quantity").val());
+                const tax = parseFloat(row.find(".tax").text());
+                const price = parseFloat(row.find(".price").text());
+                const tax_amount=parseFloat((price/100)*tax);
+                let subtotal = (price + tax_amount) * quantity;
+                if(!subtotal){
+                    subtotal=0;
+                }
+                
+                row.find(".subtotal").text(subtotal.toFixed(2));
+                calculateGrandTotal();
+            }
+
+            function calculateGrandTotal() {
+                grandTotal = 0;
+                $("#product-tbody tr").each(function () {
+                    grandTotal += parseFloat($(this).find(".subtotal").text());
+                });
+                $("#grand-total").text(grandTotal.toFixed(2));
+                calculatetaxTotal();
+            }
+
+
+            function calculatetaxTotal() {
+                totalTax = 0;
+                $("#product-tbody tr").each(function () {
+                    price  = parseFloat($(this).find(".price").text());
+                    quantity  = parseInt($(this).find(".quantity").val());
+                    if(!quantity){
+                        quantity=0;
+                    }
+                    tax = parseFloat($(this).find(".tax").text());
+                    totalTax += parseFloat((price/100)*tax*quantity);
+                });
+                $("#tax-total").text(totalTax.toFixed(2));
+            }
+
+
+            
+
+            function addRow() {
+
+                const tbody = $("#product-tbody");
+                const newRow = `
+                    <tr title="New row (Shift + R)">
+                        <td class="repeat" >
+                         <input type="hidden"  class="form-control productID"  >
+                            <input type="text" class="form-control product-name dropdown-toggle" placeholder="Product Name" 
+                                oninput="fetchProductSuggestions(this)" onclick="fetchAllProducts(this)" autocomplete="off" 
+                                onfocus="fetchAllProducts(this)" data-bs-toggle="dropdown dropdown-menu" aria-expanded="false">
+                            <ul class="dropdown-menu test" style="display: none; max-height: 120px; overflow-y: auto; width: 30%;"></ul>
+                        </td>
+                        <td><input type="number" class="form-control quantity" min="1" value="" oninput="validateQuantity(this)" style="text-align:center;"></td>
+                        <td class="tax" style="text-align:right;">0</td>
+                        <td class="price" style="text-align:right;">0</td>
+                        <td class="subtotal" style="text-align:right;">0</td>
+                        <td>
+                            <button type="button" class="btn btn-danger cancel" onclick="removeRow(this)">x</button>
+                        </td>
+                    </tr>`;
+                    tbody.append(newRow);
+                const addedRow = tbody.find("tr:last-child")[0];
+                addedRow.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+
+            function removeRow(button) {
+                const rows = $("#product-tbody").find("tr"); 
+                if (rows.length > 1) {
+                    
+                    $(button).closest("tr").remove();
+                    calculateGrandTotal();
+                    
+                } else {
+                    
+                   
+                    $(button).closest("tr").remove();
+                    calculateGrandTotal();
+                    addRow();
+                }
+            }
+
+
+            function validateQuantity(input) {
+                const row = $(input).closest("tr");
+                const productName = row.find(".product-name").val();
+                const maxQuantity = productData[productName]?.maxQuantity || 1;
+            
+                let quantity = parseInt($(input).val());
+                if (quantity < 1) quantity = 1;
+                
+            
+                $(input).val(quantity);
+                updateSubtotal(row);
+                checkAndAddRow(row);
+            }
+
+            $(document).ready(function () {
+                $(".product-name").on("focus", function () {
+                    $(this).siblings(".dropdown-menu").show();
+                });
+                
+                
+            
+                $(document).on("keydown", function (e) {
+                    const focusedElement = document.activeElement;
+                    if ($(focusedElement).hasClass("product-name")) {
+                        const productInput = $(focusedElement).val().trim();
+                        
+                        const dropdown = $(focusedElement).siblings(".dropdown-menu");
+                        const items = dropdown.find(".dropdown-item");
+                        let focusedIndex = items.index(items.filter(".focused"));
+            
+                        if (e.key === "ArrowDown") {
+                            e.preventDefault();
+                            if (focusedIndex < items.length - 1) {
+                                focusedIndex++;
+                                items.removeClass("focused");
+                                items.eq(focusedIndex).addClass("focused");
+                                ensureVisible(items.eq(focusedIndex), dropdown);
+                            }
+                        } else if (e.key === "ArrowUp") {
+                            e.preventDefault();
+                            if (focusedIndex > 0) {
+                                focusedIndex--;
+                                items.removeClass("focused");
+                                items.eq(focusedIndex).addClass("focused");
+                                ensureVisible(items.eq(focusedIndex), dropdown);
+                            }
+                        }else if (e.key === "Enter") {
+                            e.preventDefault();
+                            dropdown.show();
+                        } 
+                        else if (e.key === "Tab") {
+                            
+                            if (focusedIndex > -1) {
+                               e.preventDefault();
+                                selectDropdownItem(items.eq(focusedIndex), focusedElement);
+                            }else if (productInput === "" && focusedIndex === -1 ) {
+                                e.preventDefault();
+                                 dropdown.show();
+                                 showPopupMessage("fill the product name.");
+                             }
+                             else {
+                                    
+                                    let matchedItem = items.filter(function () {
+                                        return $(this).text().trim().toLowerCase() === productInput.trim().toLowerCase();
+                                    }).first(); 
+                
+                                    if (matchedItem.length > 0) {
+                                        e.preventDefault(); 
+                                        matchedItem.click(); 
+                                       
+                                    }else {
+                                        e.preventDefault();
+                                         dropdown.show();
+                                         showPopupMessage("Invalid name.");
+                                     }
+                                }
+                        }
+                    }else if ($(focusedElement).hasClass("quantity")) {
+                        const quantityInput = $(focusedElement).val();
+                        if (e.key === "Tab") {
+                            
+                            if (quantityInput < 1) {
+                                e.preventDefault();
+                               $(focusedElement).focus();
+                               showPopupMessage("fill the quantity.");
+                            }
+                            
+                        }
+                    }else if ($(focusedElement).hasClass("Submit")) {
+                        
+                        if (e.key === "Tab") {
+                            e.preventDefault();
+                            
+                               $(".ProductNav").focus();
+                               
+                            
+                        }
+                    }
+                });
+            
+                function ensureVisible(element, container) {
+                    const elementTop = element.position().top;
+                    const elementBottom = elementTop + element.outerHeight();
+                    const containerHeight = container.height();
+                    const scrollTop = container.scrollTop();
+            
+                    if (elementTop < 0) {
+                        container.scrollTop(scrollTop + elementTop);
+                    } else if (elementBottom > containerHeight) {
+                        container.scrollTop(scrollTop + (elementBottom - containerHeight));
+                    }
+                }
+            
+                function selectDropdownItem(selectedItem, inputField) {
+                    const selectedText = selectedItem
+
+                    if (isProductAlreadyChosen(selectedText, inputField)) {
+                        showPopupMessage("This product is already added!"); 
+                        
+                        $(inputField).closest("tr").find(".product-name").focus(); 
+                        return;
+                    }
+                    else {
+                        selectedText.click();
+                       
+                        $(inputField).siblings(".dropdown-menu").hide();
+                        $(inputField).closest("tr").find(".quantity-input").focus(); 
+                        
+                        
+                    }
+                }
+
+                function isProductAlreadyChosen(productName, currentInput) {
+                    let isDuplicate = false;
+                    $(".product-name").each(function () {
+                        if ($(this).val().trim() === productName && this !== currentInput) {
+                            isDuplicate = true;
+                            return false; 
+                        }
+                    });
+                    return isDuplicate;
+                }
+            
+              
+                $(document).on("mousedown", function (e) {
+                    if (!$(e.target).closest(".product-name, .dropdown-menu").length) {
+                        $(".dropdown-menu").hide();
+                    }
+                });
+            
+               
+                $(document).on("keydown", ".product-name", function (e) {
+                    if (e.shiftKey && e.key === "Tab") {
+                        $(this).siblings(".dropdown-menu").hide();
+                    } else if (e.key === "Tab") {
+                        $(this).siblings(".dropdown-menu").hide();
+                    }
+                });
+
+               
+                
+            
+                
+                $(".dropdown-menu").on("click", ".dropdown-item", function () {
+                    const selectedText = $(this).text().trim();
+                    const inputField = $(this).closest(".dropdown-menu").siblings(".product-name");
+                   
+                    $(".dropdown-menu").hide();
+                    inputField.closest("tr").find(".quantity-input").focus();
+                });
+            });
+
+            $(document).on("keydown", function (e) {
+                if (e.shiftKey && e.key === "R") {
+                    addRow();
+                }else if (e.shiftKey && e.key === "P") {
+                    $(".SubmitAndPrint").click();
+                    $(".dropdown-menu").hide();
+
+                }else if (e.shiftKey && e.key === "S") {
+                    $(".Submit").click();
+                    $(".dropdown-menu").hide();
+
+                }
+            });
+            
+            
+
+            $(document).ready(function () {
+                
+            
+                $("#customer-name").on("input", function () {
+                    const query = $(this).val();
+                    if (query.length > 0) {
+                        $.ajax({
+                            url: "{% url 'search_customers' %}",
+                            method: "GET",
+                            data: { query: query },
+                            success: function (data) {
+                                let suggestions = "";
+                                data.customers.forEach((customer, index) => {
+                                    suggestions += `<li class="dropdown-item" tabindex="${index}" data-name="${customer.customer_name}" data-companyname="${customer.company_name}" data-phone="${customer.phone}">
+                                        ${customer.customer_name}
+                                    </li>`;
+                                });
+                                if (suggestions) {
+                                    $("#customer-suggestions").html(suggestions).show();
+                                } else {
+                                    $("#customer-suggestions").hide();
+                                }
+                            }
+                        });
+                    } else {
+                        $("#customer-suggestions").hide();
+                    }
+                });
+
+
+
+                
+            
+                let selectedIndex = -1;
+                $(document).on("keydown", function (e) {
+                    const focusedElement = document.activeElement;
+                    if ($(focusedElement).attr("id") === "customer-name") {
+                        const dropdown = $("#customer-suggestions");
+                        const items = dropdown.find(".dropdown-item");
+                        const customerInputValue = $("#customer-name").val().trim();
+            
+                        if (items.length === 0) return;
+            
+                        if (e.key === "ArrowDown") {
+                            e.preventDefault();
+                            if (selectedIndex < items.length - 1) {
+                                selectedIndex++;
+                                highlightItem(items, selectedIndex);
+                            }
+                        } else if (e.key === "ArrowUp") {
+                            e.preventDefault();
+                            if (selectedIndex > 0) {
+                                selectedIndex--;
+                                highlightItem(items, selectedIndex);
+                            }
+                        } else if (e.key === "Enter") {
+                            e.preventDefault();
+                            dropdown.show();
+                        } else if (e.key === "Tab") {
+                            e.preventDefault();
+                            if (customerInputValue === "" && selectedIndex === -1) {
+                                dropdown.show();
+                                showPopupMessage("fill the customer name.");
+                            } else if (selectedIndex > -1) {
+                                $(items[selectedIndex]).click();
+                                dropdown.hide();
+                                $("#current-date").focus();
+                                selectedIndex = -1;
+                            } else if (selectedIndex === -1) {
+                                
+                                const matchingItem = items.filter((_, item) => 
+                                    $(item).data("name").toLowerCase() === customerInputValue.toLowerCase()
+                                ).first();
+            
+                                if (matchingItem.length > 0) {
+                                    $(matchingItem).click();
+                                    $(matchingItem).click();
+                                    dropdown.hide();
+                                    $("#current-date").focus();
+                                } else {
+                                    
+                                    dropdown.hide();
+                                    showPopupMessage("Invalid name.");
+                                }
+            
+                                selectedIndex = -1;
+                            }
+                        }
+                    }
+                });
+
+                
+            
+                $(document).on("click", function (e) {
+                    if (!$(e.target).closest("#customer-name, #customer-suggestions").length) {
+                        $("#customer-suggestions").hide();
+                    }
+                });
+            
+                $("#customer-suggestions").on("click", ".dropdown-item", function () {
+                    const selectedName = $(this).data("name");
+                    const selectedPhone = $(this).data("phone");
+                    
+                    const selectedCompany = $(this).data("companyname");
+                    $("#customer-name").val(selectedName);
+                    $("#customerphone").val(selectedPhone);
+                    $("#companyname").val(selectedCompany);
+                    $("#customer-suggestions").hide();
+                    $("#current-date").focus();
+                });
+            
+                function highlightItem(items, index) {
+                    items.removeClass("active");
+                    $(items[index]).addClass("active");
+                    $(items[index])[0].scrollIntoView({ behavior: "smooth", block: "nearest" });
+                }
+            
+                document.getElementById('current-date').addEventListener('click', function(e) {
+                    e.preventDefault();
+                });
+            }); 
+            
+           
+            
+
+
+           
+        document.getElementById('current-date').valueAsDate = new Date();
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    
+   
+   
+    
+    
+    
+
+      
+</script>
+
+ 
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const dateInput = document.getElementById("current-date");
+        const today = new Date().toISOString().split("T")[0];
+        dateInput.value = today;
+        dateInput.setAttribute("min", today);
+    });
+
+    function showPopupMessage(message) {
+        const popupMessage = $("#popup-message");
+        const popupBody = popupMessage.find(".popup-body");
+    
+        
+        popupBody.html(`
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `);
+    
+        
+        popupMessage.fadeIn();
+    
+        
+        setTimeout(function () {
+            popupMessage.fadeOut();
+        }, 3000);
+    }
+    
+    function closePopup() {
+        
+        $("#popup-message").fadeOut();
+    }
+    
+    function submitInvoice() {
+        const customerName = $("#customer-name").val();
+        const grandTotal = $("#grand-total").text(); 
+        const totalTax = $("#tax-total").text(); 
+        const date = $("#current-date").val();
+        const productDetails = [];
+    
+        $("#product-tbody tr").each(function () {
+            const productName = $(this).find(".product-name").val();
+            const quantity = $(this).find(".quantity").val();
+            const tax = $(this).find(".tax").text();
+            const price = $(this).find(".price").text();
+            const subtotal = $(this).find(".subtotal").text();
+    
+            if (productName) {
+                productDetails.push({
+                    productName: productName,
+                    quantity: quantity,
+                    tax: tax,
+                    price: price,
+                    subtotal: subtotal,
+                });
+            }
+        });
+    
+        
+        if (!customerName) {
+            showPopupMessage("Please provide customer name.");
+            return;
+        }
+    
+        if (productDetails.length === 0) {
+            showPopupMessage("Please provide at least one product.");
+            return;
+        }
+    
+        const requestData = {
+            customerName: customerName,
+            date: date,
+            grandTotal: grandTotal,
+            totalTax: totalTax,
+            productDetails: productDetails,
+        };
+    
+        $.ajax({
+            url: "{% url 'submit_invoice' %}",
+            type: "POST",
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            contentType: "application/json",
+            data: JSON.stringify(requestData),
+            success: function (response) {
+                
+    
+                if (response.status === "error") {
+                    let errorMessages = response.errors.map(error => `<li>${error.message}</li>`).join("");
+                    showPopupMessage(errorMessages);  
+                } else if (response.status === "success") {
+                    location.reload();
+                    loadCustomerTable();
+                }
+            },
+            error: function (xhr) {
+                showPopupMessage("An error occurred: " + xhr.responseJSON.message);  
+            },
+        });
+    }
+
+
+
+
+
+    function printBillInvoice() {
+        const formClone = document.getElementById('submitBill').cloneNode(true);
+    
+        const customerNameInput = formClone.querySelector("#customer-name");
+        const customerName = customerNameInput.value;
+        const customerPhoneInput = formClone.querySelector("#customerphone");
+        const customerPhone = customerPhoneInput.value;
+        const companynameInput = formClone.querySelector("#companyname");
+        const companyname = companynameInput.value;
+        const dateInput = formClone.querySelector("#current-date");
+        const rawDate = dateInput.value;
+
+        const dateParts = rawDate.split("-");
+        const date = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+       
+    
+        const productRows = formClone.querySelectorAll("#product-tbody tr");
+        const items = Array.from(productRows).map(row => {
+            const productNameInput = row.querySelector(".product-name");
+            const quantityInput = row.querySelector(".quantity");
+            const tax = row.querySelector(".tax").innerText;
+            const price = row.querySelector(".price").innerText;
+            const subTotal = row.querySelector(".subtotal").innerText;
+    
+            return {
+                product_name: productNameInput.value || "",
+                quantity: quantityInput.value || "0",
+                tax,
+                price,
+                sub_total: subTotal
+            };
+        }).filter(item => item.product_name.trim() !== "");
+    
+        const grandTotal = document.getElementById("grand-total").innerText;
+        const totalTax = document.getElementById("tax-total").innerText;
+    
+        // Create the print content with the desired styles
+        const printContent = `
+            <html>
+            <head>
+                <title>Invoice</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 20px;
+                    }
+                    .contacts {
+                        margin-bottom: 20px;
+                        display:flex;
+                        justify-content:space-between;
+                        
+                    }
+                    .invoice-to {
+                        color: #777;
+                        font-weight: bold;
+                        font-size: 0.9rem;
+                    }
+                    .invoice-to div {
+                        margin-bottom: 5px;
+                    }
+                    .invoice-details {
+                        text-align: right;
+                    }
+                    .invoice-id {
+                        font-size: 1.8rem;
+                        color: #333;
+                        font-family: 'Roboto', sans-serif;
+                    }
+                    .date {
+                        font-size: 1rem;
+                        color: #555;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 5vh;
+                        font-size: 0.85rem;
+                    }
+                    table th {
+                        background-color: rgb(255, 106, 0);
+                        color: #fff;
+                        padding: 12px;
+                        text-align: left;
+                    }
+                    table th:nth-child(n+2) {
+                        text-align: right;
+                    }
+                    table td {
+                        padding: 10px;
+                        border-bottom: 1px solid #ddd;
+                        font-size: 0.85rem;
+                        color: #333;
+                    }
+                    tfoot td {
+                        padding: 12px;
+                        text-align: right;
+                        font-weight: bold;
+                        border-top: 2px solid #ddd;
+                        font-size: 0.9rem;
+                        color: #000;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="row contacts ">
+                    <div class="col invoice-to">
+                        <div>INVOICE TO:</div>
+                        <div style=" margin-top:2vh;"> ${companyname}</div>
+                        <div style="font-size: 2vh; ">${customerName}</div>
+                        <div > ${customerPhone}</div>
+                    </div>
+                    <div class="col invoice-details">
+                        <div class="date ">Date of Invoice: ${date }</div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>GST (%)</th>
+                            <th>Price (per 1)</th>
+                            <th>Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${items.map(item => `
+                            <tr>
+                                <td>${item.product_name}</td>
+                                <td style="text-align: right;">${item.quantity}</td>
+                                <td style="text-align: right;">${item.tax}</td>
+                                <td style="text-align: right;">${item.price}</td>
+                                <td style="text-align: right;">${item.sub_total}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">GST TOTAL: &#8377; ${totalTax}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">GRAND TOTAL: &#8377; ${grandTotal}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </body>
+            </html>
+        `;
+    
+        const printFrame = document.createElement('iframe');
+        printFrame.style.position = 'absolute';
+        printFrame.style.top = '-10000px';
+        document.body.appendChild(printFrame);
+    
+        const frameDocument = printFrame.contentWindow || printFrame.contentDocument;
+        frameDocument.document.open();
+        frameDocument.document.write(printContent);
+        frameDocument.document.close();
+    
+        printFrame.onload = function () {
+            frameDocument.focus();
+            frameDocument.print();
+            document.body.removeChild(printFrame);
+        };
+    }
+    
+    
+    
+    
+    
+    
+
+
+
+
+    function submitAndPrint() {
+        const customerName = $("#customer-name").val();
+        const grandTotal = $("#grand-total").text();
+        const totalTax = $("#tax-total").text();
+        const date = $("#current-date").val();
+        const productDetails = [];
+    
+        $("#product-tbody tr").each(function () {
+            const productName = $(this).find(".product-name").val();
+            const quantity = $(this).find(".quantity").val();
+            const tax = $(this).find(".tax").text();
+            const price = $(this).find(".price").text();
+            const subtotal = $(this).find(".subtotal").text();
+
+
+            if (productName) {
+                productDetails.push({
+                    productName: productName,
+                    quantity: quantity,
+                    tax: tax,
+                    price: price,
+                    subtotal: subtotal,
+                });
+            }
+        });
+    
+        if (!customerName) {
+            showPopupMessage("Please provide customer name.");
+            return;
+        }
+    
+        if (productDetails.length === 0) {
+            showPopupMessage("Please provide at least one product.");
+            return;
+        }
+    
+        const requestData = {
+            customerName: customerName,
+            date: date,
+            grandTotal: grandTotal,
+            totalTax: totalTax,
+            productDetails: productDetails,
+        };
+    
+        $.ajax({
+            url: "{% url 'submit_invoice' %}",
+            type: "POST",
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            contentType: "application/json",
+            data: JSON.stringify(requestData),
+            success: function (response) {
+                if (response.status === "success") {
+                    printBillInvoice(); 
+                    setTimeout(function () {
+                        location.reload();
+                       
+                    }, 500);
+                } else if (response.status === "error") {
+                    let errorMessages = response.errors.map(error => `<li>${error.message}</li>`).join("");
+                    showPopupMessage(errorMessages);
+                }
+            },
+            error: function (xhr) {
+                showPopupMessage("An error occurred: " + xhr.responseJSON.message);
+            },
+        });
+    }
+    
+    
+    
+</script>
+
+<script>
+    let activeBillingId = null;
+    let currentPage = 1;
+    let pageSize = 10;
+    let currentSortField = "";
+    let currentSortOrder = "desc";
+
+    function loadCustomerTable(
+        searchQuery = "",
+        sortField = "",
+        sortOrder = "desc",
+        page = 1,
+        size = 10
+    ) {
+        fetch(
+            `/fetch-billing-customers/?search=${searchQuery}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}&size=${size}`
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                const customers = data.customers || [];
+                const tbody = document.querySelector(".container-view table tbody");
+                tbody.innerHTML = ""; 
+
+                if (customers.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center">No customer data found.</td></tr>`;
+                    return;
+                }
+
+                customers.forEach((customer, index) => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td>${(page - 1) * size + index + 1}</td>
+                        <td style="text-align:left;">${customer.customer_name}</td>
+                        <td style="text-align:right;">${customer.date}</td>
+                        <td style="text-align:right;">${customer.item_count || 0}</td>
+                        <td style="text-align:right;">₹ ${customer.grand_total || 0}</td>
+                    `;
+                    tbody.appendChild(row);
+
+                    row.addEventListener("click", () => {
+                        toggleBillingDetails(customer.billing_id, customer.customer_name);
+                    });
+                });
+
+                updatePagination(data.total_pages, data.current_page);
+                document.getElementById("size").value = size;
+            })
+            .catch((error) => {
+                console.error("Error fetching customer data:", error);
+            });
+    }
+
+    function sortTable(field) {
+       
+        if (currentSortField === field) {
+            currentSortOrder = currentSortOrder === "asc" ? "desc" : "asc";
+        } else {
+            currentSortField = field;
+            currentSortOrder = "asc";
+        }
+
+       
+        updateSortArrows();
+
+       
+        loadCustomerTable(
+            document.querySelector(".search_bill_customer").value.trim(),
+            currentSortField,
+            currentSortOrder,
+            currentPage,
+            pageSize
+        );
+    }
+
+    function updateSortArrows() {
+        
+       
+
+        
+        const activeArrow = document.getElementById(
+            `${currentSortField.replace(".", "_")}_arrow`
+        );
+        if (activeArrow) {
+            activeArrow.innerHTML = currentSortOrder === "asc" ? "⬇️" : "⬆️";
+        }
+    }
+
+    function updatePagination(totalPages, currentPage) {
+        const paginationContainer = document.querySelector(".pagination");
+        paginationContainer.innerHTML = "";
+
+        const maxVisiblePages = 3;
+        const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+        const adjustedStartPage = Math.max(1, endPage - maxVisiblePages + 1);
+
+        if (currentPage === 1) {
+            paginationContainer.innerHTML += `
+                <li class="page-item disabled" style="margin-left:3px;margin-right:3px;">
+                    <a class="page-link" href="#" data-page="" style="border-radius:15vh;">Previous</a>
+                </li>
+            `;
+        }
+
+        if (currentPage > 1) {
+            paginationContainer.innerHTML += `
+                <li class="page-item" style="margin-left:3px;margin-right:3px;">
+                    <a class="page-link" href="#" data-page="${currentPage - 1}" style="border-radius:15vh;">Previous</a>
+                </li>
+            `;
+        }
+
+        for (let i = adjustedStartPage; i <= endPage; i++) {
+            paginationContainer.innerHTML += `
+                <li class="page-item ${
+                    i === currentPage ? "active" : ""
+                }" style="margin-left:3px;margin-right:3px;">
+                    <a class="page-link" href="#" data-page="${i}" style="border-radius:15vh;">${i}</a>
+                </li>
+            `;
+        }
+
+        if (currentPage < totalPages) {
+            paginationContainer.innerHTML += `
+                <li class="page-item Nextpage" style="margin-left:3px;margin-right:3px;">
+                    <a class="page-link Nextpage" href="#" data-page="${
+                        currentPage + 1
+                    }" style="border-radius:15vh;">Next</a>
+                </li>
+            `;
+        }
+
+        if (currentPage === totalPages) {
+            paginationContainer.innerHTML += `
+                <li class="page-item disabled Nextpage" style="margin-left:3px;margin-right:3px;">
+                    <a class="page-link Nextpage" href="#" data-page="" style="border-radius:15vh;background-color: rgb(211, 211, 205);">Next</a>
+                </li>
+            `;
+        }
+
+        paginationContainer.querySelectorAll("a.page-link").forEach((link) => {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                currentPage = parseInt(this.dataset.page);
+                loadCustomerTable(
+                    document.querySelector(".search_bill_customer").value.trim(),
+                    currentSortField,
+                    currentSortOrder,
+                    currentPage,
+                    pageSize
+                );
+            });
+        });
+    }
+
+
+    
+
+            
+            document.querySelector('.search_bill_customer').addEventListener('input', function () {
+                const searchQuery = this.value.trim();
+                
+                currentPage = 1;
+                loadCustomerTable(searchQuery, currentSortField, currentSortOrder, currentPage, pageSize);
+            });
+            
+           
+            
+            document.getElementById('size').addEventListener('change', function () {
+                pageSize = parseInt(this.value) || 10;
+                currentPage = 1;
+                loadCustomerTable(
+                    document.querySelector('.search_bill_customer').value.trim(),
+                    currentSortField, 
+                    currentSortOrder,
+                    currentPage,
+                    pageSize
+                );
+            });
+
+            
+            
+            document.addEventListener('DOMContentLoaded', () => {
+                loadCustomerTable(); 
+            });
+    
+    function toggleBillingDetails(billingId, customerName) {
+        if (activeBillingId === billingId) {
+            activeBillingId = null;
+        } else {
+            fetchBillingDetails(billingId);
+            activeBillingId = billingId;
+        }
+    }
+    
+    function fetchBillingDetails(billingId) {
+        fetch(`/fetch-billing-details/${billingId}/`)
+            .then(response => response.json())
+            .then(data => {
+                const billingData = data.billing_data;
+                let billingcompany = billingData.company_name;
+               
+                if (billingData.error) {
+                    alert(billingData.error);
+                    return;
+                }
+                if(!billingcompany){
+                    billingcompany=" ";
+                    
+                }
+    
+                const modalBodyContent = document.getElementById('modalBodyContent');
+                modalBodyContent.innerHTML = `
+                    <div class="row  align-items-center" style="height: 50%;">
+                        <div class="col-12 col-lg-12 col-sm-12">
+                            <div class="container">
+                     
+                                <div class="card" style="border: none; border-radius: 10px;    max-height: auto;  background-color: white;margin-bottom:2vh;">
+                                    <div class="card-body" style="padding: 20px; background: linear-gradient(to bottom, #ffffff, #f9f9f9);  height: 100%; ">
+                                        
+                                                
+                                        
+                                                <main id="print" class="table-responsive"style="overflow:hidden;" >
+                                                    <div class="row contacts" style="margin-bottom: 20px;display:flex;justify-content:space-between;">
+                                                        <div class="col invoice-to">
+                                                            <div style="color: #777; font-weight: bold; font-size: 0.9rem;">INVOICE TO:</div>
+                                                            <div style="margin-top:2vh;"> ${billingcompany}</div>
+                                                            <div style="font-size: 2vh;"> ${billingData.customer_name}</div>
+                                                            <div > ${billingData.customer_phone}</div>
+                                                            
+                                                            
+                                                            <div class="address"></div>
+                                                        </div>
+                                                        <div class="col invoice-details " style="text-align: right;">
+                                                            <h1 class="invoice-id" style="font-size: 1.8rem; color: #333; font-family: 'Roboto', sans-serif;"></h1>
+                                                            <div class="date" style="font-size: 1rem; color: #555; text-align: right;">Date of Invoice: ${billingData.date}</div>
+                                                        </div>
+                                                    </div>
+                                                    <table style="width: 100%; border-collapse: collapse;margin-bottom:2vh; margin-top: 5vh; font-size: 0.85rem;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="background-color: rgb(255, 106, 0); color: #fff; padding: 12px; text-align: left; font-size: 0.9rem;">Product</th>
+                                                                <th style="background-color: rgb(255, 106, 0); color: #fff; padding: 12px; text-align: right; font-size: 0.9rem;">Quantity</th>
+                                                                <th style="background-color: rgb(255, 106, 0); color: #fff; padding: 12px; text-align: right; font-size: 0.9rem;">GST (%)</th>
+                                                                <th style="background-color: rgb(255, 106, 0); color: #fff; padding: 12px; text-align: right; font-size: 0.9rem;">Price (per 1)</th>
+                                                                <th style="background-color: rgb(255, 106, 0); color: #fff; padding: 12px; text-align: right; font-size: 0.9rem;">Sub Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            ${billingData.items.map(item => `
+                                                                <tr>
+                                                                    <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; font-size: 0.85rem; color: #333;">${item.product_name}</td>
+                                                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd; font-size: 0.85rem; color: #333;">${item.quantity}</td>
+                                                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd; font-size: 0.85rem; color: #333;">${item.tax}</td>
+                                                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd; font-size: 0.85rem; color: #333;">${item.price}</td>
+                                                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd; font-size: 0.85rem; color: #333;">${item.sub_total}</td>
+                                                                </tr>
+                                                            `).join('')}
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="5" style="padding: 12px; text-align: right; font-weight: bold; border-top: 2px solid #ddd; font-size: 0.9rem; color: #000;">GST TOTAL: &#8377; ${billingData.tax_total}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="5" style="padding: 12px; text-align: right; font-weight: bold; border-top: 2px solid #ddd; font-size: 0.9rem; color: #000;">GRAND TOTAL: &#8377; ${billingData.grand_total}</td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </main>
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+    
+                // Show the modal
+                const billingDetailsModal = new bootstrap.Modal(document.getElementById('billingDetailsModal'));
+                billingDetailsModal.show();
+            })
+            .catch(error => {
+                console.error('Error fetching billing details:', error);
+            });
+    }
+            
+
+    $(document).ready(function(){
+
+        
+        $("#show1").hide();
+        $("#show").hide();
+  
+        $("#show").click(function(){
+          $("#show").hide();
+          $("#show1").hide();
+          $("#show2").show();
+         
+        });
+        $("#show1").click(function(){
+            $("#show").hide();
+            $("#show1").hide();
+            $("#show2").show();
+            
+           
+          });
+          
+          $("#show2").click(function(){
+            
+            $("#show2").hide();
+            $("#show").show();
+            $("#show1").show();
+           
+          });
+      });
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const navbar = document.querySelector('nav');
+        const toggleButton = document.getElementById('toggleButton');
+        const content = document.querySelector('.content');
+
+        window.addEventListener('resize', function () {
+            if(window.innerWidth < 765){
+                navbar.classList.remove('closed');
+                content.classList.remove('expanded');
+                
+                
+            }
+        });
+    
+        toggleButton.addEventListener('click', function () {
+
+
+            
+            if(window.innerWidth < 765){
+                navbar.classList.toggle("open");
+                content.classList.toggle("open");
+                
+            }
+            else{
+
+
+                navbar.classList.toggle('closed');
+                content.classList.toggle('expanded');
+        
+                
+            }
+        });
+    });
+
+    $(document).on("keydown", function (e) {
+        const focusedElement = document.activeElement;
+        if ($(focusedElement).hasClass("Nextpage")) {
+            if (e.key === "Tab") {
+                e.preventDefault();         
+                                
+                $(".ProductNav").focus();
+                                
+                                
+            }
+        }else if ($(focusedElement).hasClass("CloseButton")) {
+            if (e.key === "Tab") {
+                   e.preventDefault();         
+                                
+                $(".btn-close").focus();
+                                
+                                
+            }
+        }
+    });
+
+
+    document.querySelectorAll(".sort-arrow").forEach(arrow => {
+        arrow.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                this.click(); 
+            }
+        });
+    });
+
+   
+    
+</script>
+
+
+<script>
+   
+
+    function printInvoice() {
+        const invoiceContent = document.getElementById('print').innerHTML;
+    
+        
+        const printFrame = document.createElement('iframe');
+        printFrame.style.position = 'absolute';
+        printFrame.style.top = '-10000px';
+        document.body.appendChild(printFrame);
+    
+       
+        const frameDocument = printFrame.contentWindow || printFrame.contentDocument;
+        frameDocument.document.open();
+        frameDocument.document.write(`
+            <html>
+            <head>
+                <title>Invoice</title>
+                <style>
+                    /* Add your styles here if needed */
+                    body { font-family: Arial, sans-serif; }
+                </style>
+            </head>
+            <body>
+                ${invoiceContent}
+            </body>
+            </html>
+        `);
+        frameDocument.document.close();
+    
+        
+        printFrame.onload = function () {
+            frameDocument.focus(); 
+            frameDocument.print(); 
+            document.body.removeChild(printFrame); 
+        };
+    }
+
+
+  </script>
+
+
+
+</body>
+</html>
